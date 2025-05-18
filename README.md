@@ -1,30 +1,27 @@
 # Neural Network Explorer
 
-Welcome to **Neural Network Explorer Project**! This website showcases three exciting and interactive components:  
-- A **Neural Network Animation**  
-- An **Advanced Calculator**  
-- A **Fun Game**
+Welcome to the **Neural Network Explorer Project**! This website is designed to help you **learn about neural networks and programming languages** in an engaging and interactive way. It also features a fun neural network animation to visualize how networks process data!
 
 ---
 
 ## Features
 
-### Neural Network Animation
-- Visually demonstrates how a neural network processes data.
-- Interactive and educational animation that explains key concepts.
-- Smooth and responsive animations optimized for modern browsers.
+### Neural Network Learning Tool
+- Explains how neural networks work and process data.
+- Interactive and educational for users of all levels, from beginners to advanced learners.
+- Provides a hands-on way to explore the concepts of neural networks.
 
-### Advanced Calculator
-- Performs complex mathematical calculations including trigonometric, logarithmic, and exponential functions.
-- User-friendly interface with support for keyboard and mouse inputs.
-- Real-time calculation results with error handling.
+### Programming Language Support
+- Learn the basics of different programming languages with practical examples.
+- Offers interactive tutorials to help improve coding skills and programming knowledge.
+- Supports multiple programming languages and explains key concepts.
 
-### Game
-- An engaging and entertaining game designed for all ages.
-- Simple controls and intuitive gameplay.
-- Responsive design to work on both desktop and mobile devices.
+### Fun Neural Network Animation
+- A fun and educational animation that visualizes the inner workings of neural networks.
+- Helps simplify complex concepts and makes learning enjoyable.
 
 ---
+
 ![image](https://github.com/user-attachments/assets/98a6a748-865d-4d57-adc1-9083f6927933)
 
 ![image](https://github.com/user-attachments/assets/5f89eac8-acfd-4029-9d71-b1e03474421b)
@@ -35,9 +32,8 @@ Welcome to **Neural Network Explorer Project**! This website showcases three exc
 
 ![image](https://github.com/user-attachments/assets/18047034-4bd6-43d0-81f1-e4e228cad016)
 
-
 ## Live Demo
-Visit the live demo of the **Neural Network Explorer** on Vercel:  
+Explore the live demo of **Neural Network Explorer** here:  
 [**Neural Network Explorer**](https://neural-network-explorer-eprg5k8pz-dilums-projects-69cce6bd.vercel.app/)
 
 ## Getting Started
