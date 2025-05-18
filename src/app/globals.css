@@ -118,6 +118,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
   }
 }
 
@@ -135,4 +137,81 @@
 
 .animate-fadeIn {
   animation: fadeIn 0.3s ease forwards;
+}
+
+/* Responsive utilities */
+.responsive-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .responsive-container {
+    max-width: 640px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .responsive-container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-container {
+    max-width: 1024px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-container {
+    max-width: 1280px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Prevent content overflow */
+.content-container {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Fix for mobile Safari 100vh issue */
+.full-height {
+  height: 100vh;
+  height: -webkit-fill-available;
+}
+
+/* Media query for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Fix for mobile keyboard behavior */
+.fixed-when-keyboard-open {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }

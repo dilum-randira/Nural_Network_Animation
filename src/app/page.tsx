@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Calculator } from "@/components/calculator/Calculator";
@@ -12,6 +12,41 @@ import { TutorialCard } from "@/components/learning/TutorialCard";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'learn' | 'explore' | 'play'>('learn');
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [isClient, setIsClient] = useState(false);
+  
+  // Set up responsive behavior
+  useEffect(() => {
+    setIsClient(true);
+    
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    // Set initial width
+    handleResize();
+    
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  
+  // Adjust neural network parameters based on screen size
+  const getNeuronCount = () => {
+    if (windowWidth < 640) return 50;
+    if (windowWidth < 1024) return 75;
+    return 100;
+  };
+  
+  const getConnectionCount = () => {
+    if (windowWidth < 640) return 100;
+    if (windowWidth < 1024) return 150;
+    return 220;
+  };
   
   // Featured courses data
   const featuredCourses = [
@@ -54,17 +89,17 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-secondary/20">
       {/* Header with enhanced styling */}
-      <header className="w-full py-6 px-4 md:px-8 bg-gradient-to-r from-blue-600/90 to-indigo-700/90 text-white shadow-md">
+      <header className="w-full py-4 sm:py-6 px-3 sm:px-4 md:px-8 bg-gradient-to-r from-blue-600/90 to-indigo-700/90 text-white shadow-md">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-2xl sm:text-3xl font-bold">
             Neural Network Explorer
           </h1>
           
-          {/* Navigation Tabs */}
-          <nav className="flex gap-2 p-1 rounded-lg bg-blue-800/30">
+          {/* Navigation Tabs - Responsive */}
+          <nav className="flex flex-wrap gap-1 sm:gap-2 p-1 rounded-lg bg-blue-800/30 w-full md:w-auto justify-center">
             <button 
               onClick={() => setActiveTab('learn')} 
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+              className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-all touch-target ${
                 activeTab === 'learn' 
                   ? 'bg-white text-blue-700 shadow-sm' 
                   : 'text-white/80 hover:text-white hover:bg-blue-800/50'
@@ -74,35 +109,35 @@ export default function Home() {
             </button>
             <button 
               onClick={() => setActiveTab('explore')} 
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+              className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-all touch-target ${
                 activeTab === 'explore' 
                   ? 'bg-white text-blue-700 shadow-sm' 
                   : 'text-white/80 hover:text-white hover:bg-blue-800/50'
               }`}
             >
-              Explore Network
+              {windowWidth < 400 ? 'Explore' : 'Explore Network'}
             </button>
             <button 
               onClick={() => setActiveTab('play')} 
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+              className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-all touch-target ${
                 activeTab === 'play' 
                   ? 'bg-white text-blue-700 shadow-sm' 
                   : 'text-white/80 hover:text-white hover:bg-blue-800/50'
               }`}
             >
-              Tools & Games
+              {windowWidth < 400 ? 'Games' : 'Tools & Games'}
             </button>
           </nav>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="flex-1 w-full max-w-7xl mx-auto p-4 md:p-8">
+      <div className="flex-1 w-full max-w-7xl mx-auto p-3 sm:p-4 md:p-8 content-container">
         {/* Learning Platform Tab */}
         {activeTab === 'learn' && (
-          <div className="space-y-12 animate-fadeIn">
+          <div className="space-y-8 sm:space-y-12 animate-fadeIn">
             {/* Hero Section with Background Pattern */}
-            <div className="relative rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 py-12 px-6 overflow-hidden">
+            <div className="relative rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 py-6 sm:py-12 px-4 sm:px-6 overflow-hidden">
               <div className="absolute inset-0 opacity-10">
                 <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                   <defs>
@@ -114,24 +149,24 @@ export default function Home() {
                 </svg>
               </div>
               
-              <div className="relative z-10 text-center space-y-4">
-                <h2 className="text-4xl font-extrabold text-gray-900 dark:text-gray-100">
+              <div className="relative z-10 text-center space-y-3 sm:space-y-4">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100">
                   Master Neural Networks <span className="text-blue-600 dark:text-blue-400">& Programming</span>
                 </h2>
-                <p className="max-w-2xl mx-auto text-xl text-gray-700 dark:text-gray-300">
+                <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-xl text-gray-700 dark:text-gray-300">
                   Interactive courses and tutorials to help you understand neural networks 
                   and master the programming languages that power them.
                 </p>
-                <div className="flex flex-wrap justify-center gap-4 mt-8">
+                <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-4 sm:mt-8">
                   <Link 
                     href="/courses" 
-                    className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+                    className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md touch-target"
                   >
                     Browse All Courses
                   </Link>
                   <Link 
                     href="/tutorials" 
-                    className="px-6 py-3 bg-white text-gray-800 dark:bg-gray-800 dark:text-white font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
+                    className="px-4 sm:px-6 py-2 sm:py-3 bg-white text-gray-800 dark:bg-gray-800 dark:text-white text-sm font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md touch-target"
                   >
                     View Tutorials
                   </Link>
@@ -140,30 +175,30 @@ export default function Home() {
             </div>
             
             {/* Stats Section */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
               { [
                 { title: 'Courses', value: '24+', description: 'Comprehensive learning paths' },
                 { title: 'Tutorials', value: '85+', description: 'Practical guides' },
                 { title: 'Community', value: '10K+', description: 'Active learners' },
                 { title: 'Languages', value: '5+', description: 'Programming languages' }
               ].map((stat, idx) => (
-                <div key={idx} className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md text-center">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{stat.title}</p>
-                  <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stat.value}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{stat.description}</p>
+                <div key={idx} className="p-3 sm:p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md text-center">
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{stat.title}</p>
+                  <p className="text-xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">{stat.value}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">{stat.description}</p>
                 </div>
               ))}
             </div>
             
             {/* Featured Courses */}
             <div>
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Featured Courses</h3>
-                <Link href="/courses" className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
+              <div className="flex justify-between items-center mb-4 sm:mb-6">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">Featured Courses</h3>
+                <Link href="/courses" className="text-sm text-blue-600 dark:text-blue-400 hover:underline font-medium">
                   View All
                 </Link>
               </div>
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
                 {featuredCourses.map(course => (
                   <CourseCard 
                     key={course.id}
@@ -179,13 +214,13 @@ export default function Home() {
             
             {/* Featured Tutorials */}
             <div>
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Latest Tutorials</h3>
-                <Link href="/tutorials" className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
+              <div className="flex justify-between items-center mb-4 sm:mb-6">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">Latest Tutorials</h3>
+                <Link href="/tutorials" className="text-sm text-blue-600 dark:text-blue-400 hover:underline font-medium">
                   View All
                 </Link>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {featuredTutorials.map(tutorial => (
                   <TutorialCard 
                     key={tutorial.id}
@@ -204,30 +239,32 @@ export default function Home() {
         
         {/* Explore Neural Network Tab */}
         {activeTab === 'explore' && (
-          <div className="space-y-8 animate-fadeIn">
+          <div className="space-y-6 sm:space-y-8 animate-fadeIn">
             <Card className="overflow-hidden shadow-lg border-primary/10 bg-background/70 backdrop-blur-md">
-              <div className="aspect-video">
-                <NeuralNetwork 
-                  neuronCount={100}
-                  connectionCount={220}
-                  neuronColor="rgba(66, 153, 225, 0.8)"
-                  lineColor="rgba(66, 153, 225, 0.4)"
-                  cursorInfluenceRadius={500}
-                  cursorInfluenceStrength={10}
-                />
+              <div className={`${windowWidth < 640 ? 'aspect-square' : 'aspect-video'}`}>
+                {isClient && (
+                  <NeuralNetwork 
+                    neuronCount={getNeuronCount()}
+                    connectionCount={getConnectionCount()}
+                    neuronColor="rgba(66, 153, 225, 0.8)"
+                    lineColor="rgba(66, 153, 225, 0.4)"
+                    cursorInfluenceRadius={windowWidth < 640 ? 300 : 500}
+                    cursorInfluenceStrength={windowWidth < 640 ? 5 : 10}
+                  />
+                )}
               </div>
             </Card>
             
-            <div className="max-w-2xl mx-auto text-center space-y-4">
-              <h2 className="text-2xl font-bold">Interactive Neural Network Animation</h2>
-              <p className="text-gray-600 dark:text-gray-400">
+            <div className="max-w-2xl mx-auto text-center space-y-3 sm:space-y-4">
+              <h2 className="text-xl sm:text-2xl font-bold">Interactive Neural Network Animation</h2>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 Move your cursor across the animation to observe how the neural network responds 
                 to your movements. The network visualizes the basic concept of interconnected 
                 neurons and dynamic information flow.
               </p>
               <Link 
                 href="/tutorials/neural-network-visualization" 
-                className="inline-block mt-4 px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors shadow-sm"
+                className="inline-block mt-2 sm:mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors shadow-sm touch-target"
               >
                 Learn How Neural Networks Work
               </Link>
@@ -237,16 +274,16 @@ export default function Home() {
         
         {/* Tools & Games Tab */}
         {activeTab === 'play' && (
-          <div className="grid md:grid-cols-2 gap-8 animate-fadeIn">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fadeIn">
             <div className="flex flex-col items-center justify-center">
-              <h2 className="text-2xl font-bold text-center mb-6">Advanced Calculator</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Advanced Calculator</h2>
               <Card className="shadow-lg border-primary/10 overflow-hidden bg-white dark:bg-gray-800 w-full max-w-md">
                 <Calculator />
               </Card>
             </div>
             
-            <div className="flex flex-col items-center justify-center">
-              <h2 className="text-2xl font-bold text-center mb-6">Shooting Ball Game</h2>
+            <div className="flex flex-col items-center justify-center mt-8 md:mt-0">
+              <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Shooting Ball Game</h2>
               <Card className="shadow-lg border-primary/10 overflow-hidden bg-white dark:bg-gray-800 w-full">
                 <ShootingGame />
               </Card>
@@ -255,20 +292,20 @@ export default function Home() {
         )}
       </div>
       
-      {/* Enhanced Footer with Navigation */}
-      <footer className="w-full py-8 px-4 border-t mt-auto bg-gray-50 dark:bg-gray-900">
+      {/* Enhanced Footer with Navigation - Responsive */}
+      <footer className="w-full py-6 sm:py-8 px-4 border-t mt-auto bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Neural Network Explorer</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs">
+              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-gray-800 dark:text-gray-200">Neural Network Explorer</h3>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 max-w-xs">
                 An educational platform dedicated to teaching neural networks and programming concepts through interactive visualizations.
               </p>
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Quick Links</h3>
-              <ul className="space-y-2">
+              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-gray-800 dark:text-gray-200">Quick Links</h3>
+              <ul className="space-y-1 sm:space-y-2">
                 { [
                   { title: 'Courses', href: '/courses' },
                   { title: 'Tutorials', href: '/tutorials' },
@@ -276,7 +313,7 @@ export default function Home() {
                   { title: 'About Us', href: '#' }
                 ].map((link, idx) => (
                   <li key={idx}>
-                    <Link href={link.href} className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+                    <Link href={link.href} className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
                       {link.title}
                     </Link>
                   </li>
@@ -284,30 +321,30 @@ export default function Home() {
               </ul>
             </div>
             
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Account</h3>
-              <ul className="space-y-2">
+            <div className="sm:col-span-2 md:col-span-1">
+              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-gray-800 dark:text-gray-200">Account</h3>
+              <div className="grid grid-cols-2 sm:block">
                 { [
                   { title: 'Login', href: '/auth/login' },
                   { title: 'Sign Up', href: '/auth/signup' },
                   { title: 'My Profile', href: '/user/profile' },
                   { title: 'My Courses', href: '/user/profile' }
                 ].map((link, idx) => (
-                  <li key={idx}>
-                    <Link href={link.href} className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+                  <div className="sm:mb-1" key={idx}>
+                    <Link href={link.href} className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
                       {link.title}
                     </Link>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
           
-          <div className="border-t border-gray-200 dark:border-gray-800 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="border-t border-gray-200 dark:border-gray-800 mt-6 sm:mt-8 pt-4 sm:pt-6 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               © {new Date().getFullYear()} Neural Network Explorer
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-500 mt-2 md:mt-0">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500 mt-2 md:mt-0">
               Built with Next.js and Shadcn UI
             </p>
           </div>
