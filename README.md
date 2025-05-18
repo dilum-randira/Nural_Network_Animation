@@ -24,6 +24,8 @@ Welcome to the **Neural Network Explorer Project**! This website is designed to 
 
 ![image](https://github.com/user-attachments/assets/98a6a748-865d-4d57-adc1-9083f6927933)
 
+![image](https://github.com/user-attachments/assets/fa113ef5-ae27-4721-bbce-dec85e800fd0)
+
 ![image](https://github.com/user-attachments/assets/5f89eac8-acfd-4029-9d71-b1e03474421b)
 
 ![image](https://github.com/user-attachments/assets/f36b398f-9af6-44a9-abe9-fd834ac1a96b)
