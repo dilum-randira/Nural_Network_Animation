@@ -1,6 +1,6 @@
-# Neural Network Animation
+# Neural Network Explorer
 
-Welcome to **Neural Network Animation Project**! This website showcases three exciting and interactive components:  
+Welcome to **Neural Network Explorer Project**! This website showcases three exciting and interactive components:  
 - A **Neural Network Animation**  
 - An **Advanced Calculator**  
 - A **Fun Game**
