@@ -8,11 +8,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input/input";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get('redirect') || '/';
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -32,25 +34,47 @@ export default function LoginForm() {
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Demo login - in a real app you would validate with a backend
-      if (data.email === "demo@example.com" && data.password === "Password123") {
-        // Store token in localStorage (for demo purposes only)
+      // Demo login credentials
+      const userCredentials = [
+        { email: "demo@example.com", password: "Password123", role: "user", name: "Demo User" },
+        { email: "admin@example.com", password: "Admin123", role: "admin", name: "Admin User" },
+        { email: "superadmin@example.com", password: "Super123", role: "superadmin", name: "Super Admin" }
+      ];
+      
+      // Find matching user
+      const matchedUser = userCredentials.find(
+        user => user.email === data.email && user.password === data.password
+      );
+      
+      if (matchedUser) {
+        // Store token and user data in localStorage
         localStorage.setItem("auth-token", "demo-jwt-token");
-        localStorage.setItem("user-email", data.email);
+        localStorage.setItem("user-email", matchedUser.email);
+        
+        // Store user object with role for admin access
+        localStorage.setItem("user", JSON.stringify({
+          email: matchedUser.email,
+          name: matchedUser.name,
+          role: matchedUser.role
+        }));
+        
+        const roleMessage = matchedUser.role !== 'user' 
+          ? `You're logged in as ${matchedUser.role}. You can access the admin dashboard.`
+          : "Welcome back to Neural Network Explorer";
         
         toast.success("Login successful!", {
-          description: "Welcome back to Neural Network Explorer",
+          description: roleMessage,
         });
         
         // Redirect after successful login
         setTimeout(() => {
-          router.push("/");
+          router.push(redirectPath);
           router.refresh(); // Force a refresh to update the auth state
         }, 1000);
       } else {
         // Demo failure case
         toast.error("Login failed", {
-          description: "Invalid email or password. Try demo@example.com / Password123",
+          description: "Invalid email or password. Try the demo credentials below.",
         });
       }
     } catch (error) {
@@ -109,9 +133,12 @@ export default function LoginForm() {
                 </FormControl>
                 <FormMessage />
                 {form.formState.isSubmitted && (
-                  <p className="text-xs text-gray-500">
-                    Demo: Use email "demo@example.com" and password "Password123"
-                  </p>
+                  <div className="text-xs text-gray-500 space-y-1 mt-2">
+                    <p><strong>Demo Accounts:</strong></p>
+                    <p>User: demo@example.com / Password123</p>
+                    <p>Admin: admin@example.com / Admin123</p>
+                    <p>Super Admin: superadmin@example.com / Super123</p>
+                  </div>
                 )}
               </FormItem>
             )}
