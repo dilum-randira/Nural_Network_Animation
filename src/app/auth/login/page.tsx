@@ -1,4 +1,5 @@
 import LoginForm from "@/components/auth/LoginForm";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Login | Neural Network Explorer",
@@ -28,7 +29,9 @@ export default function LoginPage() {
             </svg>
           </div>
         </div>
-        <LoginForm />
+        <Suspense fallback={<div>Loading form...</div>}>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );
