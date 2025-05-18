@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import { UserProfile } from '@/components/user/UserProfile';
 import { UserCourseProgress } from '@/components/user/UserCourseProgress';
@@ -85,18 +86,21 @@ export default function ProfilePage() {
               
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex flex-col space-y-2">
-                  <a 
+                  <Link href="/" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                    Home
+                  </Link>
+                  <Link
                     href="/user/settings"
                     className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
                   >
                     Account Settings
-                  </a>
-                  <a 
+                  </Link>
+                  <Link
                     href="/user/password"
                     className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
                   >
                     Change Password
-                  </a>
+                  </Link>
                   <button 
                     className="text-sm text-red-600 dark:text-red-400 hover:underline text-left"
                     onClick={() => {
