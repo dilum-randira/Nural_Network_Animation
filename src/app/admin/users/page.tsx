@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { AdminSidebar } from '@/components/admin/AdminSidebar';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 import { UserTable } from '@/components/admin/UserTable';
 import { UserFilters } from '@/components/admin/UserFilters';
 import { UserFormModal } from '@/components/admin/UserFormModal';
@@ -14,6 +14,7 @@ const INITIAL_USERS = [
     email: 'alex.j@example.com', 
     subscription: 'Basic',
     status: 'Active',
+    role: 'user',
     joinedDate: '2025-01-15',
     lastActive: '2025-05-17'
   },
@@ -23,6 +24,7 @@ const INITIAL_USERS = [
     email: 'swilson@example.com', 
     subscription: 'Premium',
     status: 'Active',
+    role: 'user',
     joinedDate: '2025-02-20',
     lastActive: '2025-05-18'
   },
@@ -32,6 +34,7 @@ const INITIAL_USERS = [
     email: 'mrodri@example.com', 
     subscription: 'Basic',
     status: 'Active',
+    role: 'user',
     joinedDate: '2025-03-05',
     lastActive: '2025-05-16'
   },
@@ -41,6 +44,7 @@ const INITIAL_USERS = [
     email: 'echen22@example.com', 
     subscription: 'Premium',
     status: 'Inactive',
+    role: 'user',
     joinedDate: '2025-03-27',
     lastActive: '2025-04-30'
   },
@@ -50,6 +54,7 @@ const INITIAL_USERS = [
     email: 'james.m@example.com', 
     subscription: 'Basic',
     status: 'Active',
+    role: 'admin',
     joinedDate: '2025-04-10',
     lastActive: '2025-05-17'
   },
@@ -59,6 +64,7 @@ const INITIAL_USERS = [
     email: 'otaylor@example.com', 
     subscription: 'Premium',
     status: 'Active',
+    role: 'user',
     joinedDate: '2025-04-22',
     lastActive: '2025-05-18'
   },
@@ -68,6 +74,7 @@ const INITIAL_USERS = [
     email: 'dbrown@example.com', 
     subscription: 'Premium',
     status: 'Inactive',
+    role: 'superadmin',
     joinedDate: '2025-01-30',
     lastActive: '2025-03-15'
   }
@@ -79,6 +86,7 @@ export default function UsersManagement() {
   const [filters, setFilters] = useState({
     status: 'all',
     subscription: 'all',
+    role: 'all',
     search: ''
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -96,6 +104,11 @@ export default function UsersManagement() {
     // Apply subscription filter
     if (filters.subscription !== 'all') {
       result = result.filter(user => user.subscription.toLowerCase() === filters.subscription.toLowerCase());
+    }
+
+    // Apply role filter
+    if (filters.role !== 'all') {
+      result = result.filter(user => user.role.toLowerCase() === filters.role.toLowerCase());
     }
 
     // Apply search filter
@@ -148,44 +161,40 @@ export default function UsersManagement() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-      <AdminSidebar />
-      
-      <div className="flex-1 p-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">User Management</h1>
-            <button 
-              onClick={handleAddNewUser}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              Add New User
-            </button>
-          </div>
-          
-          {/* User Filters */}
-          <UserFilters 
-            filters={filters}
-            onFilterChange={setFilters}
-          />
-          
-          {/* User Table */}
-          <UserTable 
-            users={filteredUsers}
-            onEditUser={handleEditUser}
-            onDeleteUser={handleDeleteUser}
-          />
-          
-          {/* User Form Modal */}
-          {isModalOpen && (
-            <UserFormModal
-              user={currentUser}
-              onSave={handleSaveUser}
-              onCancel={() => setIsModalOpen(false)}
-            />
-          )}
+    <AdminLayout>
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">User Management</h1>
+          <button 
+            onClick={handleAddNewUser}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Add New User
+          </button>
         </div>
+        
+        {/* User Filters */}
+        <UserFilters 
+          filters={filters}
+          onFilterChange={setFilters}
+        />
+        
+        {/* User Table */}
+        <UserTable 
+          users={filteredUsers}
+          onEditUser={handleEditUser}
+          onDeleteUser={handleDeleteUser}
+        />
+        
+        {/* User Form Modal */}
+        {isModalOpen && (
+          <UserFormModal
+            user={currentUser}
+            onSave={handleSaveUser}
+            onCancel={() => setIsModalOpen(false)}
+          />
+        )}
       </div>
-    </div>
+    </AdminLayout>
   );
 }
