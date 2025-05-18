@@ -25,6 +25,7 @@ Welcome to **Neural Network Explorer Project**! This website showcases three exc
 - Responsive design to work on both desktop and mobile devices.
 
 ---
+![image](https://github.com/user-attachments/assets/9c120f9e-8ebb-425a-9bef-bd11f4f95e43)
 
 ## Getting Started
 
