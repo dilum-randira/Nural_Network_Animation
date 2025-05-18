@@ -36,6 +36,10 @@ Welcome to **Neural Network Explorer Project**! This website showcases three exc
 ![image](https://github.com/user-attachments/assets/18047034-4bd6-43d0-81f1-e4e228cad016)
 
 
+## Live Demo
+Visit the live demo of the **Neural Network Explorer** on Vercel:  
+[**Neural Network Explorer**](https://neural-network-explorer-eprg5k8pz-dilums-projects-69cce6bd.vercel.app/)
+
 ## Getting Started
 
 ### Prerequisites
