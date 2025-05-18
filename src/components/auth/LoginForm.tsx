@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormValues, loginSchema } from "@/lib/validations/auth";
@@ -50,6 +50,7 @@ export default function LoginForm() {
         // Store token and user data in localStorage
         localStorage.setItem("auth-token", "demo-jwt-token");
         localStorage.setItem("user-email", matchedUser.email);
+        localStorage.setItem("auth-timestamp", Date.now().toString());
         
         // Store user object with role for admin access
         localStorage.setItem("user", JSON.stringify({
@@ -66,10 +67,18 @@ export default function LoginForm() {
           description: roleMessage,
         });
         
-        // Redirect after successful login
+        // Dispatch a custom event to notify all components about authentication change
+        window.dispatchEvent(new Event('auth-state-changed'));
+        
+        // Redirect after successful login with delay for better UX
         setTimeout(() => {
-          router.push(redirectPath);
-          router.refresh(); // Force a refresh to update the auth state
+          // Forcefully refresh the page to ensure all components update
+          if (redirectPath === window.location.pathname) {
+            window.location.reload();
+          } else {
+            router.push(redirectPath);
+            router.refresh(); // Force a refresh to update the auth state
+          }
         }, 1000);
       } else {
         // Demo failure case

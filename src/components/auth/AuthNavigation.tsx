@@ -7,6 +7,32 @@ export default function AuthNavigation() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [authTimestamp, setAuthTimestamp] = useState<string | null>(null);
+
+  // Function to check authentication status
+  const checkAuthStatus = () => {
+    // For demo, we're just checking local storage, but in a real app
+    // you'd use a proper auth provider like NextAuth.js
+    const token = localStorage.getItem("auth-token");
+    setIsLoggedIn(!!token);
+
+    // Check if the user has admin privileges
+    try {
+      const userStr = localStorage.getItem("user");
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        setUserRole(user.role);
+      } else {
+        setUserRole(null);
+      }
+
+      // Track the auth timestamp to detect changes
+      const timestamp = localStorage.getItem("auth-timestamp");
+      setAuthTimestamp(timestamp);
+    } catch (error) {
+      console.error("Failed to parse user data:", error);
+    }
+  };
 
   // Check user's login status and device size
   useEffect(() => {
@@ -19,39 +45,52 @@ export default function AuthNavigation() {
 
       // Run initial check
       checkMobile();
+      checkAuthStatus();
 
       // Listen for window resize events
       window.addEventListener("resize", checkMobile);
 
-      // For demo, we're just checking local storage, but in a real app
-      // you'd use a proper auth provider like NextAuth.js
-      const token = localStorage.getItem("auth-token");
-      setIsLoggedIn(!!token);
+      // Listen for authentication state changes
+      const handleAuthChange = () => {
+        console.log("Auth state changed, refreshing navigation...");
+        checkAuthStatus();
+      };
 
-      // Check if the user has admin privileges
-      try {
-        const userStr = localStorage.getItem("user");
-        if (userStr) {
-          const user = JSON.parse(userStr);
-          setUserRole(user.role);
+      window.addEventListener("auth-state-changed", handleAuthChange);
+
+      // Also periodically check auth status (every 3 seconds) to catch changes
+      // made in other tabs/windows
+      const interval = setInterval(() => {
+        const newTimestamp = localStorage.getItem("auth-timestamp");
+        if (newTimestamp !== authTimestamp) {
+          checkAuthStatus();
         }
-      } catch (error) {
-        console.error("Failed to parse user data:", error);
-      }
+      }, 3000);
 
+      // Cleanup event listeners
       return () => {
         window.removeEventListener("resize", checkMobile);
+        window.removeEventListener("auth-state-changed", handleAuthChange);
+        clearInterval(interval);
       };
     }
-  }, []);
+  }, [authTimestamp]);
 
   const handleLogout = () => {
     // Clear auth data for demo purposes
     localStorage.removeItem("auth-token");
     localStorage.removeItem("user-email");
     localStorage.removeItem("user");
+    localStorage.removeItem("auth-timestamp");
+
+    // Update state immediately
     setIsLoggedIn(false);
     setUserRole(null);
+
+    // Trigger auth state change event
+    window.dispatchEvent(new Event("auth-state-changed"));
+
+    // Redirect to home page with a reload
     window.location.href = "/";
   };
 
