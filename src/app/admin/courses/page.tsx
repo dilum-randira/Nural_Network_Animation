@@ -75,6 +75,17 @@ export default function AdminCoursesPage() {
   const [courseToDelete, setCourseToDelete] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editCourse, setEditCourse] = useState<any>(null);
+  const [isAddingCourse, setIsAddingCourse] = useState(false);
+  const [newCourse, setNewCourse] = useState({
+    title: '',
+    description: '',
+    level: 'Beginner',
+    duration: '4 weeks',
+    lessons: 8,
+    students: 0,
+    published: false,
+    lastUpdated: new Date().toISOString(),
+  });
 
   // Filter courses based on search query, level, and publish status
   const filteredCourses = courses.filter(course => {
@@ -130,6 +141,44 @@ export default function AdminCoursesPage() {
     setIsEditing(false);
   };
 
+  const handleNewCourseChange = (field: string, value: any) => {
+    setNewCourse({
+      ...newCourse,
+      [field]: value
+    });
+  };
+
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^\w\s]/gi, '')
+      .replace(/\s+/g, '-');
+  };
+
+  const addNewCourse = () => {
+    const courseId = generateSlug(newCourse.title);
+    
+    const courseToAdd = {
+      id: courseId,
+      ...newCourse,
+      lastUpdated: new Date().toISOString(),
+    };
+    
+    setCourses([courseToAdd, ...courses]);
+    setIsAddingCourse(false);
+    
+    setNewCourse({
+      title: '',
+      description: '',
+      level: 'Beginner',
+      duration: '4 weeks',
+      lessons: 8,
+      students: 0,
+      published: false,
+      lastUpdated: new Date().toISOString(),
+    });
+  };
+
   // Format date to a readable string
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -144,6 +193,7 @@ export default function AdminCoursesPage() {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Course Management</h1>
           <button
+            onClick={() => setIsAddingCourse(true)}
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
           >
             + Add New Course
@@ -504,6 +554,129 @@ export default function AdminCoursesPage() {
                     type="button"
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => setIsEditing(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Add New Course Modal */}
+        {isAddingCourse && (
+          <div className="fixed z-10 inset-0 overflow-y-auto">
+            <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+              <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+              </div>
+              <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+              <div className="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100">
+                        Add New Course
+                      </h3>
+                      <div className="mt-4 space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Course Title *
+                          </label>
+                          <input
+                            type="text"
+                            value={newCourse.title}
+                            onChange={(e) => handleNewCourseChange('title', e.target.value)}
+                            className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white"
+                            placeholder="e.g. Introduction to Machine Learning"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Description *
+                          </label>
+                          <textarea
+                            value={newCourse.description}
+                            onChange={(e) => handleNewCourseChange('description', e.target.value)}
+                            rows={3}
+                            className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white"
+                            placeholder="Provide a brief overview of the course content"
+                            required
+                          ></textarea>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                              Level
+                            </label>
+                            <select
+                              value={newCourse.level}
+                              onChange={(e) => handleNewCourseChange('level', e.target.value)}
+                              className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white"
+                            >
+                              <option value="Beginner">Beginner</option>
+                              <option value="Intermediate">Intermediate</option>
+                              <option value="Advanced">Advanced</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                              Duration
+                            </label>
+                            <input
+                              type="text"
+                              value={newCourse.duration}
+                              onChange={(e) => handleNewCourseChange('duration', e.target.value)}
+                              className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white"
+                              placeholder="e.g. 4 weeks"
+                            />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                              Number of Lessons
+                            </label>
+                            <input
+                              type="number"
+                              value={newCourse.lessons}
+                              onChange={(e) => handleNewCourseChange('lessons', parseInt(e.target.value))}
+                              min="1"
+                              className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                              Status
+                            </label>
+                            <select
+                              value={newCourse.published ? 'published' : 'draft'}
+                              onChange={(e) => handleNewCourseChange('published', e.target.value === 'published')}
+                              className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white"
+                            >
+                              <option value="published">Published</option>
+                              <option value="draft">Draft</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                    type="button"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    onClick={addNewCourse}
+                    disabled={!newCourse.title || !newCourse.description}
+                  >
+                    Create Course
+                  </button>
+                  <button
+                    type="button"
+                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    onClick={() => setIsAddingCourse(false)}
                   >
                     Cancel
                   </button>
