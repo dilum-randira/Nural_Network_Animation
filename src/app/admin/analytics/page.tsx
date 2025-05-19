@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 // Sample data for analytics
 const userGrowthData = [
@@ -85,6 +87,8 @@ const platformUsageData = [
 export default function AdminAnalyticsPage() {
   const [timeRange, setTimeRange] = useState('30d'); // Options: 7d, 30d, 90d, 1y
   const [compareWithPrevious, setCompareWithPrevious] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
+  const dashboardRef = useRef<HTMLDivElement>(null);
 
   // Sample metrics
   const metrics = {
@@ -110,9 +114,59 @@ export default function AdminAnalyticsPage() {
     }
   };
 
+  // Function to generate PDF from dashboard content
+  const generatePDF = async () => {
+    if (!dashboardRef.current) return;
+    
+    try {
+      setIsExporting(true);
+      
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      // Add title to the PDF
+      const title = `Neural Network Explorer Analytics - ${new Date().toLocaleDateString()}`;
+      pdf.setFontSize(16);
+      pdf.text(title, pdfWidth / 2, 15, { align: 'center' });
+      
+      // Capture each section separately for better quality
+      const sections = dashboardRef.current.querySelectorAll('.bg-white.shadow.rounded-lg');
+      let yPosition = 30; // Start position after title
+      
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i] as HTMLElement;
+        const canvas = await html2canvas(section, { scale: 2 });
+        const imgData = canvas.toDataURL('image/png');
+        
+        // Calculate image dimensions to fit in PDF
+        const imgWidth = pdfWidth - 20; // 10mm margin on each side
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        // Add new page if this section won't fit
+        if (yPosition + imgHeight > pdfHeight - 10) {
+          pdf.addPage();
+          yPosition = 20; // Reset position on new page
+        }
+        
+        // Add image to PDF
+        pdf.addImage(imgData, 'PNG', 10, yPosition, imgWidth, imgHeight);
+        yPosition += imgHeight + 10; // Add some space between sections
+      }
+      
+      // Save the PDF
+      pdf.save(`neural-network-explorer-analytics-${timeRange}.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('There was an error generating the PDF. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <AdminLayout>
-      <div className="p-6">
+      <div className="p-6" ref={dashboardRef}>
         <div className="mb-8 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Analytics Dashboard</h1>
           <div className="flex items-center space-x-4">
@@ -148,8 +202,27 @@ export default function AdminAnalyticsPage() {
             </label>
             
             {/* Export button */}
-            <button className="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
-              Export Report
+            <button 
+              onClick={generatePDF}
+              disabled={isExporting}
+              className={`flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700 ${isExporting ? 'opacity-70 cursor-not-allowed' : ''}`}
+            >
+              {isExporting ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-700 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Export PDF Report
+                </>
+              )}
             </button>
           </div>
         </div>
