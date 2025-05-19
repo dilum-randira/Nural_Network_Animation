@@ -97,6 +97,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 >
                   Tutorials
                 </Link>
+                <Link
+                  href="/pricing"
+                  className="hover:text-primary transition-colors"
+                >
+                  Pricing
+                </Link>
               </nav>
               <AuthNavigation />
               <button
@@ -253,6 +259,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   >
                     Tutorials
                   </Link>
+                  <Link
+                    href="/pricing"
+                    className="px-4 py-2 hover:bg-primary/5 rounded-md transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Pricing
+                  </Link>
                 </nav>
                 <div className="pt-4 border-t">
                   <AuthNavigation />
@@ -289,6 +302,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <li>
                       <Link href="/tutorials" className="hover:underline">
                         Tutorials
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/pricing" className="hover:underline">
+                        Pricing
                       </Link>
                     </li>
                   </ul>
