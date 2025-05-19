@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 export default function PricingPage() {
+  const router = useRouter();
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
 
   // Base monthly prices
@@ -26,6 +28,15 @@ export default function PricingPage() {
     const annualMonthlyPrice = Math.round(price * 0.8); // 20% discount
     return annualMonthlyPrice.toLocaleString();
   }
+
+  // Handle upgrade button click
+  const handleUpgrade = (planName: string, planPrice: string) => {
+    // Convert price to numeric value for backend processing
+    const numericPrice = parseInt(planPrice.replace(/,/g, ''));
+    
+    // Navigate to subscription page with plan details
+    router.push(`/user/subscription?plan=${planName.toLowerCase()}&billing=${billingCycle}&price=${numericPrice}`);
+  };
 
   // Pricing plans data with dynamic pricing based on billing cycle
   const pricingPlans = [
@@ -59,7 +70,7 @@ export default function PricingPage() {
         "Priority support"
       ],
       cta: "Upgrade Now",
-      ctaLink: "/user/subscription",
+      ctaAction: () => handleUpgrade("Premium", billingCycle === 'monthly' ? monthlyPrices.premium : annualPrices.premium),
       highlighted: true
     },
     {
@@ -184,18 +195,31 @@ export default function PricingPage() {
                 </ul>
 
                 <div className="mt-8">
-                  <Button 
-                    className={`w-full ${
-                      plan.highlighted 
-                        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white'
-                    }`}
-                    asChild
-                  >
-                    <Link href={plan.ctaLink}>
+                  {plan.ctaAction ? (
+                    <Button 
+                      className={`w-full ${
+                        plan.highlighted 
+                          ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                          : 'bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white'
+                      }`}
+                      onClick={plan.ctaAction}
+                    >
                       {plan.cta}
-                    </Link>
-                  </Button>
+                    </Button>
+                  ) : (
+                    <Button 
+                      className={`w-full ${
+                        plan.highlighted 
+                          ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                          : 'bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white'
+                      }`}
+                      asChild
+                    >
+                      <Link href={plan.ctaLink}>
+                        {plan.cta}
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </div>
             </Card>
