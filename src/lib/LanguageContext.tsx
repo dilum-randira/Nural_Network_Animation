@@ -1,72 +1,49 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import englishTranslations from '@/lib/translations/en.json';
+import sinhalaTranslations from '@/lib/translations/si.json';
 
-// Define available languages
-export type Language = 'en' | 'si';
+type Language = 'en' | 'si';
 
-// Create context interface
-interface LanguageContextType {
+type Translations = {
+  [key: string]: string;
+};
+
+type LanguageContextType = {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
-}
+};
 
-// Create the context with default values
-const LanguageContext = createContext<LanguageContextType>({
-  language: 'en',
-  setLanguage: () => {},
-  t: () => '',
-});
+const translations: Record<Language, Translations> = {
+  en: englishTranslations,
+  si: sinhalaTranslations,
+};
 
-// Create a hook to use the language context
-export const useLanguage = () => useContext(LanguageContext);
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// Props for the provider component
-interface LanguageProviderProps {
-  children: ReactNode;
-}
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  // Try to get the language from localStorage, default to English
+  const [language, setLanguageState] = useState<Language>('en');
 
-// Language provider component
-export function LanguageProvider({ children }: LanguageProviderProps) {
-  // Get stored language or default to English
-  const [language, setLanguage] = useState<Language>('en');
-  const [translations, setTranslations] = useState<Record<string, string>>({});
-
-  // Load translations when language changes
+  // Load the saved language preference when the component mounts
   useEffect(() => {
-    const loadTranslations = async () => {
-      try {
-        const translationsModule = await import(`@/lib/translations/${language}.json`);
-        setTranslations(translationsModule.default);
-      } catch (error) {
-        console.error('Failed to load translations:', error);
-        // Fallback to empty translations
-        setTranslations({});
-      }
-    };
-
-    loadTranslations();
-    
-    // Store selected language in localStorage
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('nne-language', language);
-    }
-  }, [language]);
-
-  // Initialize language from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedLanguage = localStorage.getItem('nne-language') as Language;
-      if (storedLanguage && (storedLanguage === 'en' || storedLanguage === 'si')) {
-        setLanguage(storedLanguage);
-      }
+    const savedLanguage = localStorage.getItem('language') as Language;
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'si')) {
+      setLanguageState(savedLanguage);
     }
   }, []);
 
-  // Translation function
+  // Update localStorage when language changes
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('language', lang);
+  };
+
+  // Function to get translated text
   const t = (key: string): string => {
-    return translations[key] || key;
+    return translations[language][key] || key;
   };
 
   return (
@@ -74,4 +51,14 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
       {children}
     </LanguageContext.Provider>
   );
+}
+
+export function useLanguage() {
+  const context = useContext(LanguageContext);
+  
+  if (context === undefined) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  
+  return context;
 }

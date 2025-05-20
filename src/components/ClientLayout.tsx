@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, ReactNode } from "react";
 import AuthNavigation from "@/components/auth/AuthNavigation";
 import { Toaster } from "sonner";
 import Link from "next/link";
@@ -375,7 +375,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
 }
 
 // Main ClientLayout component that provides the LanguageContext
-export default function ClientLayout({ children }: { children: React.ReactNode }) {
+export default function ClientLayout({ children }: { children: ReactNode }) {
   return (
     <LanguageProvider>
       <LayoutContent>{children}</LayoutContent>
