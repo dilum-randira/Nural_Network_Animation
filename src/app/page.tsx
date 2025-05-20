@@ -345,7 +345,7 @@ export default function Home() {
               © {new Date().getFullYear()} Neural Network Explorer
             </p>
             <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-500 mt-2 md:mt-0">
-              Built with Next.js and Shadcn UI
+              Made in Sri Lanka with ❤️
             </p>
           </div>
         </div>
