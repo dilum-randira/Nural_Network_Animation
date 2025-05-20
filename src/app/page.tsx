@@ -310,7 +310,7 @@ export default function Home() {
                   { title: 'Courses', href: '/courses' },
                   { title: 'Tutorials', href: '/tutorials' },
                   { title: 'Neural Network Explorer', href: '/explore' },
-                  { title: 'About Us', href: '#' }
+                  { title: 'About Us', href: '/about' }
                 ].map((link, idx) => (
                   <li key={idx}>
                     <Link href={link.href} className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
