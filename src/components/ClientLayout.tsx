@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import AuthNavigation from "@/components/auth/AuthNavigation";
 import { Toaster } from "sonner";
 import Link from "next/link";
+import { LanguageProvider } from "@/lib/LanguageContext";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -71,7 +72,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   };
 
   return (
-    <>
+    <LanguageProvider>
       <Toaster position="top-center" />
       <div className="min-h-screen flex flex-col">
         <header className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-b">
@@ -335,6 +336,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         </footer>
       </div>
-    </>
+    </LanguageProvider>
   );
 }
