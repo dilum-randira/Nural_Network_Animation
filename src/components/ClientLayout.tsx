@@ -4,9 +4,35 @@ import { useEffect, useState, useRef } from "react";
 import AuthNavigation from "@/components/auth/AuthNavigation";
 import { Toaster } from "sonner";
 import Link from "next/link";
-import { LanguageProvider } from "@/lib/LanguageContext";
+import { LanguageProvider, useLanguage } from "@/lib/LanguageContext";
 
-export default function ClientLayout({ children }: { children: React.ReactNode }) {
+// Create a separate component for language selection
+function LanguageSelector() {
+  const { language, setLanguage, t } = useLanguage();
+  
+  return (
+    <div className="relative inline-block text-left">
+      <select
+        value={language}
+        onChange={(e) => setLanguage(e.target.value as 'en' | 'si')}
+        className="appearance-none pl-3 pr-8 py-1.5 rounded-md text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        aria-label={t('language')}
+      >
+        <option value="en">{t('language_english')}</option>
+        <option value="si">{t('language_sinhala')}</option>
+      </select>
+      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+// Wrapper component to consume the LanguageContext
+function LayoutContent({ children }: { children: React.ReactNode }) {
+  const { t } = useLanguage();
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0);
@@ -72,14 +98,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   };
 
   return (
-    <LanguageProvider>
+    <>
       <Toaster position="top-center" />
       <div className="min-h-screen flex flex-col">
         <header className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-b">
           <div className="container mx-auto px-4 py-3 flex justify-between items-center">
             <div className="flex items-center">
               <Link href="/" className="font-bold text-xl md:text-2xl">
-                Neural Network Explorer
+                {t('app_title')}
               </Link>
             </div>
 
@@ -105,6 +131,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   Pricing
                 </Link>
               </nav>
+              
+              {/* Language selector */}
+              <LanguageSelector />
+              
               <AuthNavigation />
               <button
                 onClick={toggleTheme}
@@ -153,9 +183,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center">
+              {/* Language selector for mobile */}
+              <LanguageSelector />
+              
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-full bg-primary/5 hover:bg-primary/10 transition-colors mr-2 touch-target"
+                className="p-2 rounded-full bg-primary/5 hover:bg-primary/10 transition-colors mx-2 touch-target"
                 aria-label="Toggle dark mode"
               >
                 {theme === "light" ? (
@@ -285,15 +318,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div>
-                <h3 className="font-semibold text-lg mb-4">Neural Network Explorer</h3>
+                <h3 className="font-semibold text-lg mb-4">{t('app_title')}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Learning platform for neural networks, machine learning, and programming.
+                  {t('footer_description')}
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-8 md:gap-4">
                 <div>
-                  <h4 className="font-medium mb-3">Learn</h4>
+                  <h4 className="font-medium mb-3">{t('quick_links')}</h4>
                   <ul className="space-y-2 text-sm">
                     <li>
                       <Link href="/courses" className="hover:underline">
@@ -313,11 +346,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-3">Account</h4>
+                  <h4 className="font-medium mb-3">{t('account')}</h4>
                   <ul className="space-y-2 text-sm">
                     <li>
                       <Link href="/user/profile" className="hover:underline">
-                        Profile
+                        {t('my_profile')}
                       </Link>
                     </li>
                     <li>
@@ -331,11 +364,21 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
 
             <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800 text-sm text-center">
-              &copy; {new Date().getFullYear()} Neural Network Explorer. All rights reserved.
+              &copy; {new Date().getFullYear()} {t('app_title')}. All rights reserved.
+              <p className="mt-2 text-gray-500 dark:text-gray-400">{t('made_in')}</p>
             </div>
           </div>
         </footer>
       </div>
+    </>
+  );
+}
+
+// Main ClientLayout component that provides the LanguageContext
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <LanguageProvider>
+      <LayoutContent>{children}</LayoutContent>
     </LanguageProvider>
   );
 }
