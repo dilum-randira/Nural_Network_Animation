@@ -98,10 +98,12 @@
     "tutorials": "නිබන්ධන",
     "pricing": "මිල ගණන්",    "about": "අප ගැන",
     "login": "පිවිසෙන්න",
-    "signup": "ලියාපදිංචි වන්න",
-    "profile": "පැතිකඩ",
+    "signup": "ලියාපදිංචි වන්න",    "profile": "පැතිකඩ",
     "language": "භාෂාව",
     "settings": "සැකසුම්",
-    "resources": "සම්පත්"
+    "resources": "සම්පත්",
+    "blog": "බ්ලොග්",
+    "faq": "නිති අසන පැණ",
+    "contact": "අපව අමතන්න"
   }
 }

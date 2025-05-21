@@ -98,10 +98,12 @@
     "tutorials": "Tutorials",
     "pricing": "Pricing",    "about": "About",
     "login": "Login",
-    "signup": "Sign Up",
-    "profile": "Profile",
+    "signup": "Sign Up",    "profile": "Profile",
     "language": "Language",
     "settings": "Settings",
-    "resources": "Resources"
+    "resources": "Resources",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "contact": "Contact"
   }
 }

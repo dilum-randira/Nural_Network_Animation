@@ -370,30 +370,28 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                       <Link href="/user/profile" className="hover:underline">
                         {t('my_profile')}
                       </Link>
-                    </li>
-                    <li>
+                    </li>                    <li>
                       <Link href="/user/settings" className="hover:underline">
-                        {t('nav.settings') || "Settings"}
+                        {t('nav.settings')}
                       </Link>
                     </li>
                   </ul>
-                </div>
-                <div>
+                </div>                <div>
                   <h4 className="font-medium mb-3">{t('nav.resources')}</h4>
                   <ul className="space-y-2 text-sm">
                     <li>
                       <Link href="/blog" className="hover:underline">
-                        Blog
+                        {t('nav.blog')}
                       </Link>
                     </li>
                     <li>
                       <Link href="/faq" className="hover:underline">
-                        FAQ
+                        {t('nav.faq')}
                       </Link>
                     </li>
                     <li>
                       <Link href="/contact" className="hover:underline">
-                        {t('about.contact') || "Contact"}
+                        {t('nav.contact')}
                       </Link>
                     </li>
                   </ul>
