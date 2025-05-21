@@ -148,13 +148,26 @@
         "answer": "Neural Network Explorer works best on modern browsers like Chrome, Firefox, Safari, and Edge. We recommend keeping your browser updated to the latest version for the best experience."
       }
     }
-  },
-  "blog": {
+  },  "blog": {
     "title": "Blog",
     "subtitle": "Latest articles, tutorials, and insights about neural networks and AI",
     "coming_soon": "Coming Soon",
-    "coming_soon_message": "We're working on exciting blog content to help you learn more about neural networks and AI. Check back soon for new articles!"
-  },  "contact": {
+    "coming_soon_message": "We're working on exciting blog content to help you learn more about neural networks and AI. Check back soon for new articles!",
+    "categories": {
+      "all": "All Posts",
+      "tutorials": "Tutorials",
+      "insights": "Insights",
+      "research": "Research",
+      "news": "News"
+    },
+    "featured": "Featured Article",
+    "read_more": "Read More",
+    "more_articles": "More Articles",
+    "search_placeholder": "Search articles...",
+    "subscribe": "Subscribe to Newsletter",
+    "email_placeholder": "Your email address",
+    "subscribe_button": "Subscribe"
+  },"contact": {
     "title": "Contact Us",
     "subtitle": "Have questions or feedback? We'd love to hear from you!",
     "form": {

@@ -1,37 +1,307 @@
 "use client";
 
 import { useLanguage } from "@/lib/LanguageContext";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+
+// Define blog post interface
+interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  author: string;
+  category: string;
+  imageUrl: string;
+  featured?: boolean;
+}
 
 export default function BlogPage() {
   const { t } = useLanguage();
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+
+  // Sample blog data
+  useEffect(() => {
+    // In a real application, this data would come from an API
+    const posts: BlogPost[] = [
+      {
+        id: "introduction-to-neural-networks",
+        title: "Introduction to Neural Networks: A Beginner's Guide",
+        excerpt: "Learn the basic concepts of neural networks and how they work. This beginner-friendly guide explains neurons, layers, activation functions, and more.",
+        date: "2025-05-15",
+        author: "Dr. Amal Perera",
+        category: "tutorials",
+        imageUrl: "/images/blog/neural-network-intro.jpg",
+        featured: true
+      },
+      {
+        id: "deep-learning-vs-machine-learning",
+        title: "Deep Learning vs. Machine Learning: What's the Difference?",
+        excerpt: "Understand the key differences between deep learning and traditional machine learning approaches, and when to use each one.",
+        date: "2025-05-12",
+        author: "Samantha Silva",
+        category: "insights",
+        imageUrl: "/images/blog/dl-vs-ml.jpg"
+      },
+      {
+        id: "convolutional-neural-networks",
+        title: "Convolutional Neural Networks Explained",
+        excerpt: "Discover how CNNs work and why they're so effective for image recognition and computer vision tasks.",
+        date: "2025-05-08",
+        author: "Dr. Amal Perera",
+        category: "tutorials",
+        imageUrl: "/images/blog/cnn-explained.jpg"
+      },
+      {
+        id: "ai-ethics-challenges",
+        title: "Ethical Challenges in Artificial Intelligence",
+        excerpt: "Explore the ethical considerations and challenges that arise with the advancement of AI technologies.",
+        date: "2025-05-01",
+        author: "Nisal Jayawardene",
+        category: "insights",
+        imageUrl: "/images/blog/ai-ethics.jpg"
+      },
+      {
+        id: "recent-advances-nlp",
+        title: "Recent Advances in Natural Language Processing",
+        excerpt: "A look at the latest breakthroughs in NLP and how they're transforming the way machines understand human language.",
+        date: "2025-04-25",
+        author: "Kavindi Fernando",
+        category: "research",
+        imageUrl: "/images/blog/nlp-advances.jpg"
+      },
+      {
+        id: "ai-job-market-2025",
+        title: "The AI Job Market in 2025: Skills You Need",
+        excerpt: "Discover which skills are most in-demand for AI professionals and how to prepare for the evolving job market.",
+        date: "2025-04-20",
+        author: "Samantha Silva",
+        category: "news",
+        imageUrl: "/images/blog/ai-job-market.jpg"
+      }
+    ];
+    
+    setBlogPosts(posts);
+    setFilteredPosts(posts);
+  }, []);
+
+  // Filter posts based on category and search query
+  useEffect(() => {
+    let filtered = blogPosts;
+    
+    // Filter by category
+    if (activeCategory !== "all") {
+      filtered = filtered.filter(post => post.category === activeCategory);
+    }
+    
+    // Filter by search query
+    if (searchQuery.trim() !== "") {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        post => 
+          post.title.toLowerCase().includes(query) || 
+          post.excerpt.toLowerCase().includes(query) || 
+          post.author.toLowerCase().includes(query)
+      );
+    }
+    
+    setFilteredPosts(filtered);
+  }, [activeCategory, searchQuery, blogPosts]);
+
+  // Format date to readable string
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  // Get featured post
+  const featuredPost = blogPosts.find(post => post.featured);
+
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-4">{t('blog.title')}</h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-8">
-        {t('blog.subtitle')}
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Coming soon message */}
-        <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="64"
-            height="64"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="mb-4 text-primary"
-          >
-            <path d="M12 20h9"></path>
-            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-          </svg>
-          <h2 className="text-2xl font-semibold mb-2">{t('blog.coming_soon')}</h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-            {t('blog.coming_soon_message')}
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-12 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">{t('blog.title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-3xl mx-auto">
+            {t('blog.subtitle')}
           </p>
+          
+          {/* Search Bar */}
+          <div className="mt-8 max-w-md mx-auto">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder={t('blog.search_placeholder')}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
+              />
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Categories */}
+        <div className="flex flex-wrap justify-center gap-2 mb-12">
+          <button
+            onClick={() => setActiveCategory("all")}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              activeCategory === "all" 
+                ? "bg-blue-600 text-white" 
+                : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+            }`}
+          >
+            {t('blog.categories.all')}
+          </button>
+          <button
+            onClick={() => setActiveCategory("tutorials")}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              activeCategory === "tutorials" 
+                ? "bg-blue-600 text-white" 
+                : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+            }`}
+          >
+            {t('blog.categories.tutorials')}
+          </button>
+          <button
+            onClick={() => setActiveCategory("insights")}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              activeCategory === "insights" 
+                ? "bg-blue-600 text-white" 
+                : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+            }`}
+          >
+            {t('blog.categories.insights')}
+          </button>
+          <button
+            onClick={() => setActiveCategory("research")}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              activeCategory === "research" 
+                ? "bg-blue-600 text-white" 
+                : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+            }`}
+          >
+            {t('blog.categories.research')}
+          </button>
+          <button
+            onClick={() => setActiveCategory("news")}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              activeCategory === "news" 
+                ? "bg-blue-600 text-white" 
+                : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+            }`}
+          >
+            {t('blog.categories.news')}
+          </button>
+        </div>
+        
+        {/* Featured Post */}
+        {featuredPost && activeCategory === "all" && searchQuery === "" && (
+          <div className="mb-16">
+            <h2 className="text-2xl font-bold mb-8 border-b pb-4">{t('blog.featured')}</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+              <div className="grid md:grid-cols-2 gap-0">
+                <div className="h-64 md:h-auto bg-gray-300 relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-20"></div>
+                  <div className="absolute top-0 left-0 m-4 px-3 py-1 bg-blue-600 text-white text-xs uppercase font-bold rounded-full">
+                    {t(`blog.categories.${featuredPost.category}`)}
+                  </div>
+                </div>
+                <div className="p-8">
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-2">
+                    {formatDate(featuredPost.date)} • {featuredPost.author}
+                  </p>
+                  <h3 className="text-2xl font-bold mb-3">{featuredPost.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-6">{featuredPost.excerpt}</p>
+                  <Link href={`/blog/${featuredPost.id}`} className="inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">
+                    {t('blog.read_more')}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Blog Posts Grid */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-8 border-b pb-4">{t('blog.more_articles')}</h2>
+          
+          {filteredPosts.length === 0 ? (
+            <div className="text-center py-16">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-16 w-16 mx-auto text-gray-400 mb-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p className="text-lg text-gray-600 dark:text-gray-400">No articles found matching your criteria.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredPosts
+                .filter(post => !post.featured || activeCategory !== "all" || searchQuery !== "")
+                .map(post => (
+                  <div key={post.id} className="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden transition-all hover:shadow-lg">
+                    <div className="h-48 bg-gray-300 relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-600/20"></div>
+                      <div className="absolute top-0 left-0 m-4 px-3 py-1 bg-blue-600 text-white text-xs uppercase font-bold rounded-full">
+                        {t(`blog.categories.${post.category}`)}
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <p className="text-gray-500 dark:text-gray-400 text-sm mb-2">
+                        {formatDate(post.date)} • {post.author}
+                      </p>
+                      <h3 className="text-xl font-bold mb-2 line-clamp-2">{post.title}</h3>
+                      <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">{post.excerpt}</p>
+                      <Link href={`/blog/${post.id}`} className="text-blue-600 dark:text-blue-400 font-medium hover:underline">
+                        {t('blog.read_more')} →
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          )}
+        </div>
+        
+        {/* Newsletter */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-8 md:p-12 text-white">
+          <div className="max-w-2xl mx-auto text-center">
+            <h3 className="text-2xl font-bold mb-4">{t('blog.subscribe')}</h3>
+            <p className="mb-6 text-blue-100">
+              Get the latest articles, tutorials, and updates from Neural Network Explorer.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder={t('blog.email_placeholder')}
+                className="flex-1 px-4 py-2 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-white"
+              />
+              <button className="px-6 py-2 bg-white text-blue-600 font-medium rounded-md hover:bg-blue-50 transition-colors">
+                {t('blog.subscribe_button')}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
