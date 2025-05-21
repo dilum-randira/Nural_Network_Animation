@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/lib/LanguageContext";
+import BlogImage from "./BlogImage";
+import { Tag } from "./BlogTags";
 
 interface BlogPostCardProps {
   id: string;
@@ -11,6 +13,7 @@ interface BlogPostCardProps {
   author: string;
   category: string;
   imageUrl: string;
+  tags?: Tag[];
   featured?: boolean;
 }
 
@@ -22,6 +25,7 @@ export default function BlogPostCard({
   author,
   category,
   imageUrl,
+  tags,
   featured = false
 }: BlogPostCardProps) {
   const { t } = useLanguage();
@@ -40,8 +44,13 @@ export default function BlogPostCard({
     return (
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
         <div className="grid md:grid-cols-2 gap-0">
-          <div className="h-64 md:h-auto bg-gray-300 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-20"></div>
+          <div className="h-64 md:h-auto relative">
+            <BlogImage 
+              src={imageUrl} 
+              alt={title}
+              className="h-full"
+              priority={true}
+            />
             <div className="absolute top-0 left-0 m-4 px-3 py-1 bg-blue-600 text-white text-xs uppercase font-bold rounded-full">
               {t(`blog.categories.${category}`)}
             </div>
@@ -66,8 +75,12 @@ export default function BlogPostCard({
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden transition-all hover:shadow-lg">
-      <div className="h-48 bg-gray-300 relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-600/20"></div>
+      <div className="h-48 relative">
+        <BlogImage 
+          src={imageUrl} 
+          alt={title}
+          className="h-full"
+        />
         <div className="absolute top-0 left-0 m-4 px-3 py-1 bg-blue-600 text-white text-xs uppercase font-bold rounded-full">
           {t(`blog.categories.${category}`)}
         </div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/lib/LanguageContext";
+import BlogImage from "./BlogImage";
 
 interface RelatedPost {
   id: string;
@@ -37,7 +38,13 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {posts.map(post => (
           <div key={post.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-            <div className="h-40 bg-gray-300 relative"></div>
+            <div className="h-40 relative">
+              <BlogImage
+                src={post.imageUrl}
+                alt={post.title}
+                className="h-full"
+              />
+            </div>
             <div className="p-4">
               <h3 className="font-bold mb-2 line-clamp-2">{post.title}</h3>
               <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">{formatDate(post.date)}</p>

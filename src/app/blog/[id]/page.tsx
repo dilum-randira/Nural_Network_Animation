@@ -6,6 +6,10 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import BlogLayout from "@/components/blog/BlogLayout";
 import RelatedPosts from "@/components/blog/RelatedPosts";
+import CommentSection from "@/components/blog/CommentSection";
+import BlogImage from "@/components/blog/BlogImage";
+import BlogTags, { Tag } from "@/components/blog/BlogTags";
+import ShareButtons from "@/components/blog/ShareButtons";
 
 interface BlogPost {
   id: string;
@@ -16,6 +20,7 @@ interface BlogPost {
   author: string;
   category: string;
   imageUrl: string;
+  tags?: Tag[];
   featured?: boolean;
 }
 
@@ -93,6 +98,10 @@ export default function BlogPostPage() {
         author: "Dr. Amal Perera",
         category: "tutorials",
         imageUrl: "/images/blog/neural-network-intro.jpg",
+        tags: [
+          { id: "neural_networks", name: "Neural Networks" },
+          { id: "beginners", name: "Beginners" }
+        ],
         featured: true
       },
       {
@@ -171,7 +180,11 @@ export default function BlogPostPage() {
         date: "2025-05-12",
         author: "Samantha Silva",
         category: "insights",
-        imageUrl: "/images/blog/dl-vs-ml.jpg"
+        imageUrl: "/images/blog/dl-vs-ml.jpg",
+        tags: [
+          { id: "deep_learning", name: "Deep Learning" },
+          { id: "machine_learning", name: "Machine Learning" }
+        ]
       },
       {
         id: "convolutional-neural-networks",
@@ -180,7 +193,11 @@ export default function BlogPostPage() {
         date: "2025-05-08",
         author: "Dr. Amal Perera",
         category: "tutorials",
-        imageUrl: "/images/blog/cnn-explained.jpg"
+        imageUrl: "/images/blog/cnn-explained.jpg",
+        tags: [
+          { id: "neural_networks", name: "Neural Networks" },
+          { id: "computer_vision", name: "Computer Vision" }
+        ]
       },
       {
         id: "ai-ethics-challenges",
@@ -189,7 +206,10 @@ export default function BlogPostPage() {
         date: "2025-05-01",
         author: "Nisal Jayawardene",
         category: "insights",
-        imageUrl: "/images/blog/ai-ethics.jpg"
+        imageUrl: "/images/blog/ai-ethics.jpg",
+        tags: [
+          { id: "ai_ethics", name: "AI Ethics" }
+        ]
       },
       {
         id: "recent-advances-nlp",
@@ -198,7 +218,11 @@ export default function BlogPostPage() {
         date: "2025-04-25",
         author: "Kavindi Fernando",
         category: "research",
-        imageUrl: "/images/blog/nlp-advances.jpg"
+        imageUrl: "/images/blog/nlp-advances.jpg",
+        tags: [
+          { id: "nlp", name: "Natural Language Processing" },
+          { id: "advanced", name: "Advanced" }
+        ]
       },
       {
         id: "ai-job-market-2025",
@@ -207,7 +231,11 @@ export default function BlogPostPage() {
         date: "2025-04-20",
         author: "Samantha Silva",
         category: "news",
-        imageUrl: "/images/blog/ai-job-market.jpg"
+        imageUrl: "/images/blog/ai-job-market.jpg",
+        tags: [
+          { id: "machine_learning", name: "Machine Learning" },
+          { id: "programming", name: "Programming" }
+        ]
       }
     ];
 
@@ -242,36 +270,40 @@ export default function BlogPostPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto animate-pulse">
-          <div className="h-8 bg-gray-300 dark:bg-gray-700 rounded mb-4 w-3/4"></div>
-          <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded mb-6 w-1/2"></div>
-          <div className="h-64 bg-gray-300 dark:bg-gray-700 rounded mb-6"></div>
-          <div className="space-y-3">
-            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-4/6"></div>
+      <BlogLayout>
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-3xl mx-auto animate-pulse">
+            <div className="h-8 bg-gray-300 dark:bg-gray-700 rounded mb-4 w-3/4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded mb-6 w-1/2"></div>
+            <div className="h-64 bg-gray-300 dark:bg-gray-700 rounded mb-6"></div>
+            <div className="space-y-3">
+              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6"></div>
+              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-4/6"></div>
+            </div>
           </div>
         </div>
-      </div>
+      </BlogLayout>
     );
   }
 
   if (!post) {
     return (
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-3xl font-bold mb-4">Post Not Found</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            The blog post you're looking for doesn't exist or has been removed.
-          </p>
-          <Link href="/blog" className="inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">
-            Back to Blog
-          </Link>
+      <BlogLayout>
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-3xl font-bold mb-4">Post Not Found</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              The blog post you're looking for doesn't exist or has been removed.
+            </p>
+            <Link href="/blog" className="inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">
+              Back to Blog
+            </Link>
+          </div>
         </div>
-      </div>
+      </BlogLayout>
     );
   }
   return (
@@ -300,10 +332,33 @@ export default function BlogPostPage() {
               <span className="mr-4">{formatDate(post.date)}</span>
               <span>By {post.author}</span>
             </div>
+            
+            {/* Tags */}
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-4">
+                <BlogTags tags={post.tags} />
+              </div>
+            )}
           </header>
           
           {/* Featured image */}
-          <div className="mb-8 rounded-xl overflow-hidden bg-gray-200 h-64 md:h-80"></div>
+          <div className="mb-8 rounded-xl overflow-hidden">
+            <BlogImage
+              src={post.imageUrl}
+              alt={post.title}
+              height={500}
+              priority={true}
+            />
+          </div>
+          
+          {/* Share buttons */}
+          <div className="mb-8">
+            <ShareButtons
+              url={`https://neuralnetworkexplorer.com/blog/${post.id}`}
+              title={post.title}
+              description={post.excerpt}
+            />
+          </div>
           
           {/* Article content */}
           <div className="prose prose-lg dark:prose-invert max-w-none">
@@ -329,6 +384,9 @@ export default function BlogPostPage() {
               </div>
             </div>
           </div>
+          
+          {/* Comments section */}
+          <CommentSection postId={post.id} initialComments={[]} />
         </article>
         
         {/* Related posts */}

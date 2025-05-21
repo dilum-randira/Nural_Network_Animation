@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import BlogLayout from "@/components/blog/BlogLayout";
 import BlogPostCard from "@/components/blog/BlogPostCard";
+import BlogTags, { Tag } from "@/components/blog/BlogTags";
 import { useSearchParams } from "next/navigation";
 
 // Define blog post interface
@@ -16,6 +17,7 @@ interface BlogPost {
   author: string;
   category: string;
   imageUrl: string;
+  tags?: { id: string; name: string }[];
   featured?: boolean;
 }
 
@@ -23,19 +25,25 @@ export default function BlogPage() {
   const { t } = useLanguage();
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const tagParam = searchParams.get('tag');
   
   const [activeCategory, setActiveCategory] = useState("all");
+  const [activeTag, setActiveTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+  const [allTags, setAllTags] = useState<Tag[]>([]);
 
   // Set active category from URL param when component mounts
   useEffect(() => {
     if (categoryParam) {
       setActiveCategory(categoryParam);
     }
-  }, [categoryParam]);
-
+    
+    if (tagParam) {
+      setActiveTag(tagParam);
+    }
+  }, [categoryParam, tagParam]);
   // Sample blog data
   useEffect(() => {
     // In a real application, this data would come from an API
@@ -48,6 +56,10 @@ export default function BlogPage() {
         author: "Dr. Amal Perera",
         category: "tutorials",
         imageUrl: "/images/blog/neural-network-intro.jpg",
+        tags: [
+          { id: "neural_networks", name: "Neural Networks" },
+          { id: "beginners", name: "Beginners" }
+        ],
         featured: true
       },
       {
@@ -57,7 +69,11 @@ export default function BlogPage() {
         date: "2025-05-12",
         author: "Samantha Silva",
         category: "insights",
-        imageUrl: "/images/blog/dl-vs-ml.jpg"
+        imageUrl: "/images/blog/dl-vs-ml.jpg",
+        tags: [
+          { id: "deep_learning", name: "Deep Learning" },
+          { id: "machine_learning", name: "Machine Learning" }
+        ]
       },
       {
         id: "convolutional-neural-networks",
@@ -66,7 +82,11 @@ export default function BlogPage() {
         date: "2025-05-08",
         author: "Dr. Amal Perera",
         category: "tutorials",
-        imageUrl: "/images/blog/cnn-explained.jpg"
+        imageUrl: "/images/blog/cnn-explained.jpg",
+        tags: [
+          { id: "neural_networks", name: "Neural Networks" },
+          { id: "computer_vision", name: "Computer Vision" }
+        ]
       },
       {
         id: "ai-ethics-challenges",
@@ -75,7 +95,10 @@ export default function BlogPage() {
         date: "2025-05-01",
         author: "Nisal Jayawardene",
         category: "insights",
-        imageUrl: "/images/blog/ai-ethics.jpg"
+        imageUrl: "/images/blog/ai-ethics.jpg",
+        tags: [
+          { id: "ai_ethics", name: "AI Ethics" }
+        ]
       },
       {
         id: "recent-advances-nlp",
@@ -84,7 +107,11 @@ export default function BlogPage() {
         date: "2025-04-25",
         author: "Kavindi Fernando",
         category: "research",
-        imageUrl: "/images/blog/nlp-advances.jpg"
+        imageUrl: "/images/blog/nlp-advances.jpg",
+        tags: [
+          { id: "nlp", name: "Natural Language Processing" },
+          { id: "advanced", name: "Advanced" }
+        ]
       },
       {
         id: "ai-job-market-2025",
@@ -93,14 +120,34 @@ export default function BlogPage() {
         date: "2025-04-20",
         author: "Samantha Silva",
         category: "news",
-        imageUrl: "/images/blog/ai-job-market.jpg"
+        imageUrl: "/images/blog/ai-job-market.jpg",
+        tags: [
+          { id: "machine_learning", name: "Machine Learning" },
+          { id: "programming", name: "Programming" }
+        ]
       }
-    ];
-    
+    ];    
     setBlogPosts(posts);
     setFilteredPosts(posts);
+    
+    // Extract all tags from posts and count occurrences
+    const tagsMap = new Map<string, { id: string; name: string; count: number }>();
+    
+    posts.forEach(post => {
+      if (post.tags) {
+        post.tags.forEach(tag => {
+          if (tagsMap.has(tag.id)) {
+            const existingTag = tagsMap.get(tag.id)!;
+            existingTag.count++;
+          } else {
+            tagsMap.set(tag.id, { id: tag.id, name: tag.name, count: 1 });
+          }
+        });
+      }
+    });
+    
+    setAllTags(Array.from(tagsMap.values()));
   }, []);
-
   // Filter posts based on category and search query
   useEffect(() => {
     let filtered = blogPosts;
@@ -108,6 +155,13 @@ export default function BlogPage() {
     // Filter by category
     if (activeCategory !== "all") {
       filtered = filtered.filter(post => post.category === activeCategory);
+    }
+    
+    // Filter by tag
+    if (activeTag) {
+      filtered = filtered.filter(post => 
+        post.tags?.some(tag => tag.id === activeTag)
+      );
     }
     
     // Filter by search query
@@ -122,7 +176,7 @@ export default function BlogPage() {
     }
     
     setFilteredPosts(filtered);
-  }, [activeCategory, searchQuery, blogPosts]);
+  }, [activeCategory, activeTag, searchQuery, blogPosts]);
 
   // Format date to readable string
   const formatDate = (dateString: string) => {
@@ -163,7 +217,17 @@ export default function BlogPage() {
                   </svg>
                 </div>
               </div>
-            </div>
+            </div>          </div>
+          
+          {/* Popular Tags */}
+          <div className="mt-8 mb-12">
+            <h2 className="text-xl font-bold mb-4 text-center">Popular Tags</h2>
+            <BlogTags 
+              tags={allTags} 
+              selectedTag={activeTag || undefined} 
+              showCount={true}
+              className="justify-center"
+            />
           </div>
           
           {/* Categories */}
