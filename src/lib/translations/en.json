@@ -160,13 +160,57 @@
       "research": "Research",
       "news": "News"
     },
+    "tags": {
+      "neural_networks": "Neural Networks",
+      "deep_learning": "Deep Learning",
+      "machine_learning": "Machine Learning",
+      "ai_ethics": "AI Ethics",
+      "computer_vision": "Computer Vision",
+      "nlp": "Natural Language Processing",
+      "reinforcement_learning": "Reinforcement Learning",
+      "generative_ai": "Generative AI",
+      "programming": "Programming",
+      "beginners": "Beginners",
+      "advanced": "Advanced"
+    },
     "featured": "Featured Article",
     "read_more": "Read More",
     "more_articles": "More Articles",
     "search_placeholder": "Search articles...",
-    "subscribe": "Subscribe to Newsletter",
-    "email_placeholder": "Your email address",
-    "subscribe_button": "Subscribe"
+    "comments": {
+      "title": "Comments",
+      "no_comments": "No comments yet. Be the first to share your thoughts!",
+      "leave_comment": "Leave a Comment",
+      "add_comment": "Add a Comment",
+      "name": "Your Name",
+      "email": "Your Email",
+      "comment": "Your Comment",
+      "submit": "Submit Comment",
+      "cancel": "Cancel",
+      "reply": "Reply",
+      "replies": "Replies",
+      "error_name_required": "Name is required",
+      "error_email_required": "Email is required",
+      "error_email_invalid": "Please enter a valid email address",
+      "error_content_required": "Comment cannot be empty"
+    },
+    "newsletter": {
+      "title": "Subscribe to Newsletter",
+      "description": "Get the latest articles, tutorials, and updates from Neural Network Explorer.",
+      "email_placeholder": "Your email address",
+      "subscribe_button": "Subscribe",
+      "subscribing": "Subscribing...",
+      "success": "Thanks for subscribing! You'll receive our next newsletter in your inbox.",
+      "error_email_required": "Email is required",
+      "error_email_invalid": "Please enter a valid email address",
+      "error_submission": "There was an error submitting your subscription. Please try again."
+    },
+    "author": {
+      "read_more": "Read more from this author",
+      "bio": "Bio",
+      "website": "Website",
+      "social_media": "Follow on social media"
+    }
   },"contact": {
     "title": "Contact Us",
     "subtitle": "Have questions or feedback? We'd love to hear from you!",
