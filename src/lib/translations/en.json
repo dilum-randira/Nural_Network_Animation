@@ -103,7 +103,50 @@
     "settings": "Settings",
     "resources": "Resources",
     "blog": "Blog",
-    "faq": "FAQ",
-    "contact": "Contact"
+    "faq": "FAQ",    "contact": "Contact"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to common questions about Neural Network Explorer",
+    "categories": {
+      "general": "General",
+      "courses": "Courses",
+      "account": "Account & Subscription",
+      "technical": "Technical Support"
+    },
+    "questions": {
+      "what_is_nne": {
+        "question": "What is Neural Network Explorer?",
+        "answer": "Neural Network Explorer is an interactive learning platform designed to help users understand neural networks through visualizations, courses, tutorials, and hands-on tools. Our platform makes complex AI concepts accessible to learners of all levels."
+      },
+      "who_is_for": {
+        "question": "Who is Neural Network Explorer for?",
+        "answer": "Our platform is designed for students, educators, professionals, and anyone interested in learning about neural networks and AI. Whether you're a complete beginner or looking to deepen your knowledge, we have resources tailored to different skill levels."
+      },
+      "languages": {
+        "question": "Which languages are supported?",
+        "answer": "Currently, Neural Network Explorer is available in English and Sinhala. We're working on adding more languages to make our platform accessible to even more learners worldwide."
+      },
+      "course_access": {
+        "question": "How do I access the courses?",
+        "answer": "To access our courses, you need to create an account. Some introductory content is available for free, while our comprehensive courses require a subscription. Visit our Pricing page for more details on subscription options."
+      },
+      "certificate": {
+        "question": "Do I get a certificate after completing a course?",
+        "answer": "Yes! Upon successful completion of any course, you'll receive a digital certificate that you can add to your resume or share on professional platforms like LinkedIn."
+      },
+      "cancel_subscription": {
+        "question": "How do I cancel my subscription?",
+        "answer": "You can cancel your subscription at any time by going to your Account Settings and selecting the 'Subscription' tab. Your access will continue until the end of your current billing period."
+      },
+      "technical_issues": {
+        "question": "I'm experiencing technical issues. How can I get help?",
+        "answer": "For technical support, please visit our Contact page and submit a support ticket. Our team is available to help you resolve any issues you might encounter."
+      },
+      "browser": {
+        "question": "Which browsers are supported?",
+        "answer": "Neural Network Explorer works best on modern browsers like Chrome, Firefox, Safari, and Edge. We recommend keeping your browser updated to the latest version for the best experience."
+      }
+    }
   }
 }
