@@ -7,7 +7,7 @@ import sinhalaTranslations from '@/lib/translations/si.json';
 type Language = 'en' | 'si';
 
 type Translations = {
-  [key: string]: string;
+  [key: string]: string | Record<string, any>;
 };
 
 type LanguageContextType = {
