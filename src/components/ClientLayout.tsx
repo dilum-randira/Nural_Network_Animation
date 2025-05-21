@@ -130,6 +130,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                 >
                   Pricing
                 </Link>
+                <Link
+                  href="/about"
+                  className="hover:text-primary transition-colors"
+                >
+                  {t('nav.about')}
+                </Link>
               </nav>
               
               {/* Language selector */}
@@ -300,6 +306,13 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                   >
                     Pricing
                   </Link>
+                  <Link
+                    href="/about"
+                    className="px-4 py-2 hover:bg-primary/5 rounded-md transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {t('nav.about')}
+                  </Link>
                 </nav>
                 <div className="pt-4 border-t">
                   <AuthNavigation />
@@ -341,6 +354,11 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                     <li>
                       <Link href="/pricing" className="hover:underline">
                         Pricing
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/about" className="hover:underline">
+                        {t('nav.about')}
                       </Link>
                     </li>
                   </ul>

@@ -43,7 +43,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   // Function to get translated text
   const t = (key: string): string => {
-    return translations[language][key] || key;
+    const value = translations[language][key];
+    return typeof value === 'string' ? value : key;
   };
 
   return (
