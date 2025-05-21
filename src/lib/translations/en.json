@@ -148,5 +148,44 @@
         "answer": "Neural Network Explorer works best on modern browsers like Chrome, Firefox, Safari, and Edge. We recommend keeping your browser updated to the latest version for the best experience."
       }
     }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Latest articles, tutorials, and insights about neural networks and AI",
+    "coming_soon": "Coming Soon",
+    "coming_soon_message": "We're working on exciting blog content to help you learn more about neural networks and AI. Check back soon for new articles!"
+  },  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have questions or feedback? We'd love to hear from you!",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "subject_placeholder": "Select a subject",
+      "general": "General Inquiry",
+      "support": "Technical Support",
+      "feedback": "Feedback",
+      "partnership": "Partnership",
+      "message": "Message",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "thank_you": "Thank You!",
+      "success_message": "Your message has been sent successfully. We'll get back to you as soon as possible."
+    },
+    "info": {
+      "title": "Contact Information",
+      "phone": "Phone",
+      "phone_number": "+94 11 234 5678",
+      "email": "Email",
+      "email_address": "support@neuralnetworkexplorer.com",
+      "address": "Address",
+      "address_line1": "123 Innovation Street",
+      "address_line2": "Colombo 00700",
+      "address_line3": "Sri Lanka",
+      "hours_title": "Hours of Operation",
+      "hours_weekday": "Monday - Friday: 9AM - 5PM",
+      "hours_saturday": "Saturday: 10AM - 2PM",
+      "hours_sunday": "Sunday: Closed"
+    }
   }
 }
