@@ -40,11 +40,25 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setLanguageState(lang);
     localStorage.setItem('language', lang);
   };
-
   // Function to get translated text
   const t = (key: string): string => {
-    const value = translations[language][key];
-    return typeof value === 'string' ? value : key;
+    // Handle nested keys like 'nav.courses'
+    if (key.includes('.')) {
+      const keys = key.split('.');
+      let value = translations[language];
+      
+      // Navigate through nested objects
+      for (const k of keys) {
+        if (!value || typeof value !== 'object') return key;
+        value = value[k];
+      }
+      
+      return typeof value === 'string' ? value : key;
+    } else {
+      // Handle simple keys
+      const value = translations[language][key];
+      return typeof value === 'string' ? value : key;
+    }
   };
 
   return (
