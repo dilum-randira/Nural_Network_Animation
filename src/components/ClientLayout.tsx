@@ -337,7 +337,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-8 md:gap-4">                <div>
+              <div className="grid grid-cols-3 gap-8 md:gap-4">
+                <div>
                   <h4 className="font-medium mb-3">{t('quick_links')}</h4>
                   <ul className="space-y-2 text-sm">
                     <li>
@@ -361,7 +362,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                       </Link>
                     </li>
                   </ul>
-                </div>                <div>
+                </div>
+                <div>
                   <h4 className="font-medium mb-3">{t('account')}</h4>
                   <ul className="space-y-2 text-sm">
                     <li>
@@ -372,6 +374,26 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                     <li>
                       <Link href="/user/settings" className="hover:underline">
                         {t('nav.settings') || "Settings"}
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-3">{t('nav.resources')}</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li>
+                      <Link href="/blog" className="hover:underline">
+                        Blog
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/faq" className="hover:underline">
+                        FAQ
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/contact" className="hover:underline">
+                        {t('about.contact') || "Contact"}
                       </Link>
                     </li>
                   </ul>
