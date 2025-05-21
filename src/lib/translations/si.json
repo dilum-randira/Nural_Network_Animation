@@ -96,11 +96,12 @@
     "home": "මුල් පිටුව",
     "courses": "පාඨමාලා",
     "tutorials": "නිබන්ධන",
-    "pricing": "මිල ගණන්",
-    "about": "අප ගැන",
+    "pricing": "මිල ගණන්",    "about": "අප ගැන",
     "login": "පිවිසෙන්න",
     "signup": "ලියාපදිංචි වන්න",
     "profile": "පැතිකඩ",
-    "language": "භාෂාව"
+    "language": "භාෂාව",
+    "settings": "සැකසුම්",
+    "resources": "සම්පත්"
   }
 }

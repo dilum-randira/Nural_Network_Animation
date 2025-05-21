@@ -96,11 +96,12 @@
     "home": "Home",
     "courses": "Courses",
     "tutorials": "Tutorials",
-    "pricing": "Pricing",
-    "about": "About",
+    "pricing": "Pricing",    "about": "About",
     "login": "Login",
     "signup": "Sign Up",
     "profile": "Profile",
-    "language": "Language"
+    "language": "Language",
+    "settings": "Settings",
+    "resources": "Resources"
   }
 }
