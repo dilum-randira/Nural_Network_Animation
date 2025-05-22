@@ -53,6 +53,43 @@ const courseContent = [
       enabling it to learn complex patterns and make sophisticated decisions.
     `,
     accessLevel: 'premium',
+  },
+  {
+    id: 'loss-functions',
+    title: 'Loss Functions',
+    content: `
+      Loss functions measure how well a neural network performs by quantifying the difference between predicted outputs 
+      and actual target values. Different loss functions are suited for different types of tasks, such as regression, 
+      binary classification, or multi-class classification.
+    `,
+    accessLevel: 'basic',
+  },
+  {
+    id: 'optimization',
+    title: 'Optimization Techniques',
+    content: `
+      Training neural networks involves finding the optimal weights that minimize the loss function. Various optimization 
+      algorithms like Gradient Descent, Adam, and RMSprop have been developed to make this process more efficient and effective.
+    `,
+    accessLevel: 'premium',
+  },
+  {
+    id: 'applications',
+    title: 'Real-world Applications',
+    content: `
+      Neural networks power a wide range of applications across different domains. From image recognition and natural language 
+      processing to medical diagnosis and autonomous vehicles, neural networks have transformed how we solve complex problems.
+    `,
+    accessLevel: 'free',
+  },
+  {
+    id: 'practical-example',
+    title: 'Practical Example: Digit Recognition',
+    content: `
+      In this section, we'll build a simple neural network to recognize handwritten digits. This practical example will 
+      illustrate how concepts like activation functions, loss functions, and optimization techniques come together in a real application.
+    `,
+    accessLevel: 'premium',
   }
 ];
 
@@ -502,11 +539,177 @@ function backpropagation(network, input, target, learningRate) {
                     </div>
                   </AuthenticatedContent>
                 )}
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+                
+                {activeSection === 'loss-functions' && (
+                  <AuthenticatedContent requiredLevel="basic">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                      <h3 className="text-xl font-bold mb-4">Loss Functions in Neural Networks</h3>
+                      <p className="mb-4">
+                        Loss functions are crucial for training neural networks as they quantify the difference between the predicted 
+                        output and the actual target values. The choice of loss function can significantly impact the network's performance.
+                      </p>
+                      
+                      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                          <h4 className="font-semibold mb-2">Mean Squared Error (MSE)</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            MSE = (1/n) * Σ(actual - predicted)²
+                          </p>
+                          <div className="h-32 bg-gray-50 dark:bg-gray-900 rounded-lg p-2">
+                            {/* MSE visualization would go here */}
+                            <svg className="w-full h-full" viewBox="0 0 200 100">
+                              <line x1="0" y1="80" x2="200" y2="20" stroke="#3B82F6" strokeWidth="2" />
+                              <line x1="0" y1="20" x2="200" y2="80" stroke="#F87171" strokeWidth="2" />
+                              <line x1="0" y1="50" x2="200" y2="50" stroke="#94A3B8" strokeWidth="1" strokeDasharray="4" />
+                            </svg>
+                          </div>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>• Commonly used for regression tasks</li>
+                            <li>• Sensitive to outliers</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                          <h4 className="font-semibold mb-2">Binary Cross-Entropy Loss</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            BCE = - (1/n) * Σ[actual * log(predicted) + (1 - actual) * log(1 - predicted)]
+                          </p>
+                          <div className="h-32 bg-gray-50 dark:bg-gray-900 rounded-lg p-2">
+                            {/* BCE visualization would go here */}
+                            <svg className="w-full h-full" viewBox="0 0 200 100">
+                              <path d="M 0,80 Q 50,10 100,10 Q 150,10 200,80" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                              <line x1="0" y1="50" x2="200" y2="50" stroke="#94A3B8" strokeWidth="1" strokeDasharray="4" />
+                            </svg>
+                          </div>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>• Ideal for binary classification problems</li>
+                            <li>• Outputs a probability value between 0 and 1</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                          <h4 className="font-semibold mb-2">Categorical Cross-Entropy Loss</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            CCE = - (1/n) * Σactual * log(predicted)
+                          </p>
+                          <div className="h-32 bg-gray-50 dark:bg-gray-900 rounded-lg p-2">
+                            {/* CCE visualization would go here */}
+                            <svg className="w-full h-full" viewBox="0 0 200 100">
+                              <path d="M 0,80 Q 50,10 100,10 Q 150,10 200,80" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                              <line x1="0" y1="50" x2="200" y2="50" stroke="#94A3B8" strokeWidth="1" strokeDasharray="4" />
+                            </svg>
+                          </div>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>• Used for multi-class classification tasks</li>
+                            <li>• Requires one-hot encoded labels</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                          <h4 className="font-semibold mb-2">Hinge Loss</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            Hinge = (1/n) * Σmax(0, 1 - actual * predicted)
+                          </p>
+                          <div className="h-32 bg-gray-50 dark:bg-gray-900 rounded-lg p-2">
+                            {/* Hinge loss visualization would go here */}
+                            <svg className="w-full h-full" viewBox="0 0 200 100">
+                              <path d="M 0,90 L 100,10 L 200,90" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                              <line x1="0" y1="50" x2="200" y2="50" stroke="#94A3B8" strokeWidth="1" strokeDasharray="4" />
+                            </svg>
+                          </div>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>• Commonly used for "maximum-margin" classification, most notably for support vector machines</li>
+                            <li>• Not suitable for probabilistic interpretations</li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-8">
+                        <h4 className="text-lg font-semibold mb-2">Choosing the Right Loss Function:</h4>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                          The choice of loss function depends on the specific task, the output of the neural network, and the desired properties of the solution. Here's a quick guide:
+                        </p>
+                        <ul className="list-disc pl-5 space-y-2">
+                          <li><span className="font-medium">Regression tasks:</span> Use Mean Squared Error (MSE) or Mean Absolute Error (MAE).</li>
+                          <li><span className="font-medium">Binary classification:</span> Use Binary Cross-Entropy Loss.</li>
+                          <li><span className="font-medium">Multi-class classification:</span> Use Categorical Cross-Entropy Loss.</li>
+                          <li><span className="font-medium">Maximum-margin classification:</span> Use Hinge Loss.</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </AuthenticatedContent>
+                )}
+                
+                {activeSection === 'optimization' && (
+                  <AuthenticatedContent requiredLevel="premium">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                      <h3 className="text-xl font-bold mb-4">Optimization Techniques for Neural Networks</h3>
+                      <p className="mb-4">
+                        Optimization algorithms are essential for training neural networks as they adjust the weights to minimize the loss function. 
+                        Several optimization techniques have been developed, each with its own advantages and use cases.
+                      </p>
+                      
+                      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                          <h4 className="font-semibold mb-2">Gradient Descent</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            A first-order iterative optimization algorithm for finding the minimum of a function.
+                          </p>
+                          <div className="h-32 bg-gray-50 dark:bg-gray-900 rounded-lg p-2">
+                            {/* Gradient Descent visualization would go here */}
+                            <svg className="w-full h-full" viewBox="0 0 200 100">
+                              <path d="M 0,90 Q 50,10 100,10 Q 150,10 200,90" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                              <line x1="0" y1="50" x2="200" y2="50" stroke="#94A3B8" strokeWidth="1" strokeDasharray="4" />
+                            </svg>
+                          </div>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>• Simple to implement</li>
+                            <li>• Can be slow to converge</li>
+                            <li>• Prone to getting stuck in local minima</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                          <h4 className="font-semibold mb-2">Stochastic Gradient Descent (SGD)</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            A variant of gradient descent where the update is performed for each training example.
+                          </p>
+                          <div className="h-32 bg-gray-50 dark:bg-gray-900 rounded-lg p-2">
+                            {/* SGD visualization would go here */}
+                            <svg className="w-full h-full" viewBox="0 0 200 100">
+                              <path d="M 0,90 Q 50,10 100,10 Q 150,10 200,90" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                              <line x1="0" y1="50" x2="200" y2="50" stroke="#94A3B8" strokeWidth="1" strokeDasharray="4" />
+                            </svg>
+                          </div>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>• Faster convergence than standard gradient descent</li>
+                            <li>• More noisy updates can help escape local minima</li>
+                            <li>• Requires careful tuning of learning rate</li>
+                          </li>
+                        </div>
+                        
+                        <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                          <h4 className="font-semibold mb-2">Adam Optimizer</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            An adaptive learning rate optimization algorithm that's been designed specifically for training deep neural networks.
+                          </p>
+                          <div className="h-32 bg-gray-50 dark:bg-gray-900 rounded-lg p-2">
+                            {/* Adam visualization would go here */}
+                            <svg className="w-full h-full" viewBox="0 0 200 100">
+                              <path d="M 0,90 Q 50,10 100,10 Q 150,10 200,90" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                              <line x1="0" y1="50" x2="200" y2="50" stroke="#94A3B8" strokeWidth="1" strokeDasharray="4" />
+                            </svg>
+                          </div>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>• Combines advantages of Adagrad and RMSProp</li>
+                            <li>• Well-suited for problems with large data and/or parameters</li>
+                            <li>• Generally requires less tuning of hyperparameters</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                          <h4 className="font-semibold mb-2">RMSprop</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            An adaptive learning rate method designed to tackle the problem of diminishing learning rates in standard gradient descent.
+                          </p>
+                          <div className="h-32 bg-gray-50 dark:bg-gray-900 rounded-lg p-2">
