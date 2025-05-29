@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { CodeExample } from '@/components/learning/CodeExample';
 import { EducationalNeuralNetwork } from '@/components/learning/EducationalNeuralNetwork';
+import { EnhancedEducationalNeuralNetwork } from '@/components/learning/EnhancedEducationalNeuralNetwork';
 import { AuthenticatedContent } from '@/components/learning/AuthenticatedContent';
 
 // Demo course content
@@ -533,14 +534,16 @@ export default function NeuralNetworkFundamentals() {
                         Multilayer networks, also known as multilayer perceptrons (MLPs), consist of at least three layers:
                         an input layer, one or more hidden layers, and an output layer.
                       </p>
-                      
-                      <div className="mt-8 h-80 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                        <EducationalNeuralNetwork 
+                        <div className="mt-8 h-80 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                        <EnhancedEducationalNeuralNetwork 
                           inputCount={4}
                           hiddenLayers={[6, 5]}
                           outputCount={3}
                           interactive={true}
                           showLabels={true}
+                          theme="purple"
+                          showWeights={true}
+                          animateSignals={true}
                         />
                       </div>
                       

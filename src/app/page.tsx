@@ -260,13 +260,18 @@ export default function Home() {
                 )}
               </div>
             </div>
-            
-            <div className="flex justify-center mt-4">
+              <div className="flex justify-center mt-4 gap-4">
               <Link 
                 href="/courses/neural-networks-fundamentals" 
                 className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md touch-target"
               >
                 {t('learn_how')}
+              </Link>
+              <Link 
+                href="/visualizations" 
+                className="px-6 py-3 bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white text-sm font-medium rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors shadow-md touch-target"
+              >
+                Explore Visualizations
               </Link>
             </div>
           </div>
@@ -286,9 +291,17 @@ export default function Home() {
               <Card className="p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
                 <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">{t('shooting_game')}</h3>
                 <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 h-[300px]">
-                  {isClient && <ShootingGame />}
-                </div>
+                  {isClient && <ShootingGame />}                </div>
               </Card>
+            </div>
+            
+            <div className="flex justify-center mt-6">
+              <Link 
+                href="/visualizations" 
+                className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md touch-target"
+              >
+                Explore More Interactive Visualizations
+              </Link>
             </div>
           </div>
         )}

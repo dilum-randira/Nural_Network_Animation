@@ -117,12 +117,17 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                   className="hover:text-primary transition-colors"
                 >
                   {t('nav.courses')}
-                </Link>
-                <Link
+                </Link>                <Link
                   href="/tutorials"
                   className="hover:text-primary transition-colors"
                 >
                   {t('nav.tutorials')}
+                </Link>
+                <Link
+                  href="/visualizations"
+                  className="hover:text-primary transition-colors"
+                >
+                  Visualizations
                 </Link>
                 <Link
                   href="/pricing"
@@ -289,13 +294,19 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {t('nav.courses')}
-                </Link>
-                <Link
+                </Link>                <Link
                   href="/tutorials"
                   className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {t('nav.tutorials')}
+                </Link>
+                <Link
+                  href="/visualizations"
+                  className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Visualizations
                 </Link>
                 <Link
                   href="/pricing"
