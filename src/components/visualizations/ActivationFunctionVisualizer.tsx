@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
+import { Button } from "../ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Slider } from "../ui/slider";
 
 interface ActivationFunctionVisualizerProps {
   width?: number;
@@ -17,8 +17,7 @@ export function ActivationFunctionVisualizer({
   height = 300,
   defaultFunction = 'sigmoid',
   interactive = true,
-}: ActivationFunctionVisualizerProps) {
-  const [activeFunction, setActiveFunction] = useState(defaultFunction);
+}: ActivationFunctionVisualizerProps) {  const [activeFunction, setActiveFunction] = useState<'sigmoid' | 'relu' | 'tanh' | 'leakyRelu' | 'softmax'>(defaultFunction);
   const [parameter, setParameter] = useState(0.1);
   const [hoverPosition, setHoverPosition] = useState<{ x: number, y: number } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -207,7 +206,7 @@ export function ActivationFunctionVisualizer({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
       <div className="mb-4">
-        <Tabs defaultValue={activeFunction} onValueChange={(value) => setActiveFunction(value as any)}>
+        <Tabs defaultValue={activeFunction} onValueChange={(value: string) => setActiveFunction(value as 'sigmoid' | 'relu' | 'tanh' | 'leakyRelu' | 'softmax')}>
           <TabsList className="grid grid-cols-5 mb-4">
             <TabsTrigger value="sigmoid">Sigmoid</TabsTrigger>
             <TabsTrigger value="relu">ReLU</TabsTrigger>

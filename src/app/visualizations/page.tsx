@@ -1,17 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ActivationFunctionVisualizer } from "@/components/visualizations/ActivationFunctionVisualizer";
-import { LossFunctionVisualizer } from "@/components/visualizations/LossFunctionVisualizer";
-import { NeuralNetworkTrainingSimulator } from "@/components/visualizations/NeuralNetworkTrainingSimulator";
-import { EnhancedEducationalNeuralNetwork } from "@/components/learning/EnhancedEducationalNeuralNetwork";
-
-export const metadata = {
-  title: "Interactive Neural Network Visualizations | Neural Network Explorer",
-  description: "Explore neural networks through interactive visualizations. Learn about activation functions, loss functions, and network training."
-};
+import { Button } from "../../components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
+import { ActivationFunctionVisualizer } from "../../components/visualizations/ActivationFunctionVisualizer";
+import { LossFunctionVisualizer } from "../../components/visualizations/LossFunctionVisualizer";
+import { NeuralNetworkTrainingSimulator } from "../../components/visualizations/NeuralNetworkTrainingSimulator";
+import { EnhancedEducationalNeuralNetwork } from "../../components/learning/EnhancedEducationalNeuralNetwork";
 
 export default function Visualizations() {
   const [activeTab, setActiveTab] = useState("activation");

@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
+import { Button } from "../ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Slider } from "../ui/slider";
 
 interface LossFunctionVisualizerProps {
   width?: number;
@@ -18,7 +18,7 @@ export function LossFunctionVisualizer({
   defaultFunction = 'mse',
   interactive = true,
 }: LossFunctionVisualizerProps) {
-  const [activeFunction, setActiveFunction] = useState(defaultFunction);
+  const [activeFunction, setActiveFunction] = useState<'mse' | 'mae' | 'binaryCrossEntropy' | 'categoricalCrossEntropy' | 'huber'>(defaultFunction);
   const [delta, setDelta] = useState(1.0); // For Huber loss
   const [prediction, setPrediction] = useState(0.5); // For interactive visualization
   const [actualValue, setActualValue] = useState(1.0); // Ground truth
@@ -206,7 +206,7 @@ export function LossFunctionVisualizer({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
       <div className="mb-4">
-        <Tabs defaultValue={activeFunction} onValueChange={(value) => setActiveFunction(value as any)}>
+        <Tabs defaultValue={activeFunction} onValueChange={(value: string) => setActiveFunction(value as 'mse' | 'mae' | 'binaryCrossEntropy' | 'categoricalCrossEntropy' | 'huber')}>
           <TabsList className="grid grid-cols-5 mb-4">
             <TabsTrigger value="mse">MSE</TabsTrigger>
             <TabsTrigger value="mae">MAE</TabsTrigger>
