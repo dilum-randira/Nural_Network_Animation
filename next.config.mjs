@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   eslint: {
     // Warning: This setting allows production builds to successfully complete even with ESLint errors
     ignoreDuringBuilds: true,

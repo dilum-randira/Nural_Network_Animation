@@ -1,32 +1,15 @@
 "use client";
 
-import { useEffect, useState, useRef, ReactNode } from "react";
-import AuthNavigation from "@/components/auth/AuthNavigation";
+import { ReactNode } from "react";
 import { Toaster } from "sonner";
-import Link from "next/link";
-import { LanguageProvider, useLanguage } from "@/lib/LanguageContext";
+import { LanguageProvider } from "@/lib/LanguageContext";
 
-// Create a separate component for language selection
-function LanguageSelector() {
-  const { language, setLanguage, t } = useLanguage();
-  
+export default function ClientLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="relative inline-block text-left">
-      <select
-        value={language}
-        onChange={(e) => setLanguage(e.target.value as 'en' | 'si')}
-        className="appearance-none pl-3 pr-8 py-1.5 rounded-md text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        aria-label={t('language')}
-      >
-        <option value="en">{t('language_english')}</option>
-        <option value="si">{t('language_sinhala')}</option>
-      </select>
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
-        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-        </svg>
-      </div>
-    </div>
+    <LanguageProvider>
+      <Toaster position="top-center" />
+      {children}
+    </LanguageProvider>
   );
 }
 
