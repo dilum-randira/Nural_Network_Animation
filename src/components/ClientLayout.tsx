@@ -7,45 +7,16 @@ import { LanguageProvider } from "@/lib/LanguageContext";
 export default function ClientLayout({ children }: { children: ReactNode }) {
   return (
     <LanguageProvider>
-      <Toaster position="top-center" />
-      {children}
+      <div className="min-h-screen flex flex-col">
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Toaster position="top-center" />
+      </div>
     </LanguageProvider>
   );
-}
 
-// Wrapper component to consume the LanguageContext
-function LayoutContent({ children }: { children: React.ReactNode }) {
-  const { t } = useLanguage();
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [windowWidth, setWindowWidth] = useState<number>(0);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-
-  // Check user preference for dark mode
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setWindowWidth(window.innerWidth);
-
-      if (
-        localStorage.getItem("theme") === "dark" ||
-        (!localStorage.getItem("theme") &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        setTheme("dark");
-        document.documentElement.classList.add("dark");
-      } else {
-        setTheme("light");
-        document.documentElement.classList.remove("dark");
-      }
-
-      // Handle resize events for responsive behavior
-      const handleResize = () => {
-        setWindowWidth(window.innerWidth);
-        // Auto-close mobile menu on larger screen sizes
-        if (window.innerWidth >= 768) {
-          setIsMobileMenuOpen(false);
-        }
-      };
+  // Check user preference for dark mode  };
 
       window.addEventListener("resize", handleResize);
       return () => window.removeEventListener("resize", handleResize);
